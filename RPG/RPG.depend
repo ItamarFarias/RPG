@@ -2,3 +2,10 @@
 1510437392 source:c:\users\pedro\desktop\projetoaplp\rpg\main.cpp
 	<iostream>
 
+1510700184 source:c:\users\pc1\desktop\gitproject\rpg\main.cpp
+	<iostream>
+	<stdlib.h>
+	<locale.h>
+	<unistd.h>
+	<windows.h>
+
