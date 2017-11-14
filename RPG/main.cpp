@@ -199,7 +199,7 @@ void damangeRecieve(int dano){
 
 struct inimigo{
     string nome;
-    int hp;
+    int hp = 0;
     int velocidade;
     int ataque;
     int defesa;
@@ -241,19 +241,21 @@ string enemyname[] = {"morcego","dragão", "troll","goblin","orc","mago negro" ,"
 
 
 // responsavel pela criação de inimigo randomico
-string enemyMaker (inimigo i,Player player){
+inimigo enemyMaker (Player player){
 
 
+
+ inimigo i;
  int indice = rand()% 14;
  string nome = enemyname[indice];
- i.nome =  nome ; // seleciona um nome aleatorio do array de inimigos;
- i.ataque = rand()% player.ataque*3;
+ i.nome = nome ; // seleciona um nome aleatorio do array de inimigos;
+ i.ataque = rand()% player.ataque *3;
  i.velocidade = rand()% player.velocidade +5 ;
  i.hp = player.hp /2;
- i.defesa =  rand() % (player.defesa*2);
+ i.defesa =  rand() % (player.defesa *2);
  i.defesaMagica = rand() % (player.defesaMagica*2);
 
- return nome;
+ return i;
 
 
 
@@ -268,16 +270,15 @@ string enemyMaker (inimigo i,Player player){
 void gerenciadorBatalha (Player player){
 
 
-
     inimigo enemy;
-    string nome = enemyMaker(enemy,player);
+    enemy = enemyMaker(player);
     bool alive = true;
     cout << "" << endl;
     cout << "Um novo inimigo surge :" <<endl ;
     cout << "" <<endl;
     Sleep(3000);
     system("cls");
-    cout<< nome << endl;
+    cout<< enemy.nome << endl;
 
     while(alive == true){
 
@@ -293,8 +294,8 @@ void gerenciadorBatalha (Player player){
 
 
             enemy.damangeRecieve(dano);
-            cout<< "Voce causou "<<dano;
-            cout<< " de dano em  " << nome << endl;
+            cout<< "Voce causou "<< dano;
+            cout<< " de dano em  " << enemy.nome << endl;
             cout<<""<<endl;
             Sleep(3000);
             system("cls");
