@@ -22,7 +22,7 @@ struct Player{
     int nivel  = 1; // atributo que rege as outras caracteristicas do jogador
     int mana =  200; // responsavel por conjuração de magia
     int manaMax = 200; // quantidade maxima de mana do jogador
-    bool status = true;
+    bool status = true; // Indica se o jogador esta vivo ou morto
 
     void changeName(){
         cout << "" << endl;
@@ -35,6 +35,7 @@ struct Player{
         cout << "" << endl;
     }
 
+// Responsavel por realizar ação escolhida pelo jogador
     int action(){
         string escolha;
         int danocausado ;
@@ -44,7 +45,6 @@ struct Player{
         cout<< "1 - Atague fisico "<< endl;
         cout<< "2 - Cura  " <<endl;
         cout<< "3 - Magia " <<endl;
-        cout<< "4 - Fugir" <<endl;
         cout<< "" << endl;
         cout <<"-------------------------------------------------------------" << endl;
         cout<< "" << endl;
@@ -75,6 +75,8 @@ struct Player{
 
 
         }
+
+
 
         else{
             cout <<"Opção invalida : por favor selecione uma opção valida " <<endl;
@@ -109,7 +111,15 @@ struct Player{
 
             if(mana >= 10){
                 mana -= 10;
+                system("cls");
+                cout <<"-------------------------------------------------------------" << endl;
+                cout << "Você gastou 10 de mana para conjurar o feitiço";
+                cout << mana;
+                cout << " / ";
+                cout << manaMax << endl;
+                cout <<"-------------------------------------------------------------" << endl;
                 cout << "Uma esfera de fogo surge em sua mão"<<endl;
+                cout<< "" << endl;
                 dano =  30;
                 }
 
@@ -132,9 +142,10 @@ struct Player{
 
 
 
-
+     return dano;
 
     }
+// Metodo que enche o hp do personagem ao custo de mana
 
 
     int cura(){
@@ -142,7 +153,7 @@ struct Player{
 
     }
 
-// Remove hp dp jogador de acordo com o dano sofrido e retorna seu status
+// Remove hp dp jogador de acordo com o dano sofrido
 void damangeRecieve(int dano){
 
         hp -= dano ;
@@ -154,28 +165,33 @@ void damangeRecieve(int dano){
 
 }
 
-// gerencia o exp e aumenta o nivel do jogador
+// faz alterações nos atributos do jogado quando o mesmo sobe de nivel
     int gerenciadorExp(){
         if(exp >= nivel){
-        hp+= hp/15;
+        hpMax+= hpMax/5;
+        manaMax += manaMax/5;
         velocidade+= velocidade  / 3 ;
         ataque+= ataque/5 ;
         defesa+= defesa/5;
         defesaMagica+= defesaMagica/5;
         nivel++;
         controlNivel= controlNivel * 2;
+        hp =  hpMax;
+        mana = manaMax;
         }
     }
+// a cada termino de batalha enche o hp e mana do jogador e tambem verifica se o jogador possui xp suficiente para subir de nivel
+    int update( int xp ) {
 
-    int atributoUpdate( int nivel ,string atriName ) {
-        int result;
-        if(atriName == "hp") {
+        exp += xp;
+        hp =  hpMax;
+        mana =  manaMax;
+
+        if(exp >= controlNivel){
+            gerenciadorExp();
+
         }
-        if(atriName == "velocidade"){}
-        else if(atriName  == "ataque"){}
-        else if(atriName  == "defesa"){}
-        else if(atriName == "defesaMagica"){}
-        else if(atriName == "controlNivel"){}
+
     }
 
     void imprimeInfoJogador(){
@@ -204,7 +220,7 @@ struct inimigo{
     int ataque;
     int defesa;
     int defesaMagica;
-    int xpDrop;
+    int xpDrop; // esse atributo indica quanto de xp o inimigo dara ao ser derrotado
     bool status = true;
 
     void ImprimeInfoInimigo(){
@@ -220,7 +236,7 @@ struct inimigo{
         cout << "-------------------------------------------------------------" << endl;
         cout << "" << endl;}
 
-
+     // remove a quantidade recebida do hp do inimigo
     void damangeRecieve(int dano){
 
         hp -= dano ;
@@ -232,7 +248,7 @@ struct inimigo{
 };
 
 
-
+//array com nomes de inimigos
 string enemyname[] = {"morcego","dragão", "troll","goblin","orc","mago negro" ,"rato","barata" , "demonio ","harpia", "Cerberus","cobra", "espirito","Cavaleiro Negro","Corrompido"};
 
 
@@ -246,7 +262,7 @@ inimigo enemyMaker (Player player){
 
 
  inimigo i;
- int indice = rand()% 14;
+ int indice = rand()% 15;
  string nome = enemyname[indice];
  i.nome = nome ; // seleciona um nome aleatorio do array de inimigos;
  i.ataque = rand()% player.ataque *3;
@@ -290,6 +306,10 @@ void gerenciadorBatalha (Player player){
            Sleep(3000);
             cout<<"Seu turno"<<endl;
             cout<<""<<endl;
+            cout <<"-------------------------------------------------------------" << endl;
+            cout <<"HP: " << player.hp<<endl;
+            cout <<"Mana: " << player.mana << endl;
+            cout <<"-------------------------------------------------------------"<< endl;
             int dano = player.action();
 
 
@@ -297,8 +317,9 @@ void gerenciadorBatalha (Player player){
             cout<< "Voce causou "<< dano;
             cout<< " de dano em  " << enemy.nome << endl;
             cout<<""<<endl;
-            Sleep(3000);
+            Sleep(4000);
             system("cls");
+            if(enemy.status){
             cout<<"Turno inimigo"<<endl;
             cout<<""<<endl;
             Sleep(2000);
@@ -306,9 +327,9 @@ void gerenciadorBatalha (Player player){
 
             player.damangeRecieve(enemy.ataque);
             cout << " O inimigo lhe causou  " << enemy.ataque;
-            cout << "de dano" << endl;
+            cout << " de dano" << endl;
             cout << "" << endl;
-            Sleep(3000);
+            Sleep(3000);}
 
 
 
@@ -318,6 +339,8 @@ void gerenciadorBatalha (Player player){
           else {
             if(enemy.status == false){
                 cout<<"voce venceu";
+                player.update(enemy.xpDrop);
+
             }
 
             else {
@@ -338,7 +361,7 @@ void gerenciadorBatalha (Player player){
 
 int main()
 {
-    setlocale(LC_ALL, "Portuguese");
+    setlocale(LC_ALL, "Portuguese"); // permite acentuação
     Player player1;
     player1.changeName();
     player1.imprimeInfoJogador();
