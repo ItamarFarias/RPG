@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <unistd.h>
-#include <windows.h>
+//#include <windows.h>
 
 using namespace std;
 using namespace std;
@@ -292,7 +292,7 @@ void gerenciadorBatalha (Player player){
     cout << "" << endl;
     cout << "Um novo inimigo surge :" <<endl ;
     cout << "" <<endl;
-    Sleep(3000);
+    usleep(3000000);
     system("cls");
     cout<< enemy.nome << endl;
 
@@ -303,7 +303,7 @@ void gerenciadorBatalha (Player player){
         if(player.status == true and enemy.status == true){ // se o jogador e o inimigo estão vivos ambos podem atacar
            alive = true;
            enemy.ImprimeInfoInimigo();
-           Sleep(3000);
+           usleep(3000000);
             cout<<"Seu turno"<<endl;
             cout<<""<<endl;
             cout <<"-------------------------------------------------------------" << endl;
@@ -317,19 +317,19 @@ void gerenciadorBatalha (Player player){
             cout<< "Voce causou "<< dano;
             cout<< " de dano em  " << enemy.nome << endl;
             cout<<""<<endl;
-            Sleep(4000);
+            usleep(4000000);
             system("cls");
             if(enemy.status){
             cout<<"Turno inimigo"<<endl;
             cout<<""<<endl;
-            Sleep(2000);
+            usleep(2000000);
             system("cls");
 
             player.damangeRecieve(enemy.ataque);
             cout << " O inimigo lhe causou  " << enemy.ataque;
             cout << " de dano" << endl;
             cout << "" << endl;
-            Sleep(3000);}
+            usleep(3000000);}
 
 
 
