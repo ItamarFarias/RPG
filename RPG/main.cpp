@@ -155,7 +155,7 @@ struct Player{
     }
 
 // Remove hp do jogador de acordo com o dano sofrido
-void damangeRecieve(int dano){
+    void damangeRecieve(int dano){
 
         hp -= dano ;
         if(hp <= 0){
@@ -163,7 +163,7 @@ void damangeRecieve(int dano){
             status = false;
         }
 
-}
+    }
 
 // faz alterações nos atributos do jogado quando o mesmo sobe de nivel
     int gerenciadorExp(){
@@ -246,6 +246,61 @@ struct inimigo{
     }
 
 };
+
+void printAcoes(){
+
+    cout << "" << endl;
+    cout << "-------------------------------------------------------------" << endl;
+    cout << "Selecione uma ação :" << endl;
+    cout << "1 - Atague fisico "<< endl;
+    cout << "2 - Cura  " << endl;
+    cout << "3 - Magia " << endl << endl;
+    cout << "-------------------------------------------------------------" << endl << endl << endl;
+
+}
+
+
+int seletorDeAcoes(Player player, inimigo inimigo){
+    int escolha;
+    int danoCausado ;
+
+    printAcoes();
+
+    cout << "Digite o numero referente a ação desejada : ";
+    cin >> escolha;
+    cout << "" << endl;
+
+    switch (escolha) {
+        case 1:{
+            cout << "Você ataca o inimigo fisicamente " << endl << endl;
+            float dano = (float) player.ataque;
+            float defesa = ((float) inimigo.defesa) / 100.0;
+            float calculoDeDano = dano / (defesa + 1.0);
+            danoCausado = (int) calculoDeDano;
+            break;
+        }
+        case 2:{
+            cout << "Você sente que precisa recuperar suas energias" << endl;
+            danoCausado = player.cura();
+            break;
+        }
+        case 3:{
+            cout << "Você resolve chamar as forças aliadas" << endl;
+            float danoMagico = (float) player.magia();
+            float defesaMagica = ((float) inimigo.defesaMagica) / 100.0;
+            float calculoDeDano = danoMagico / (defesaMagica + 1.0);
+            danoCausado = (int) calculoDeDano;
+            break;
+        }
+        default:{
+            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
+            danoCausado = seletorDeAcoes(player, inimigo);
+        }
+    }
+
+    return danoCausado;
+
+}
 
 
 //array com nomes de inimigos
