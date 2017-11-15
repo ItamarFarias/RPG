@@ -259,6 +259,16 @@ void printAcoes(){
 
 }
 
+int calculaDanoFisico(float dano, float defesa){
+    defesa = defesa / 100.0;
+    return dano / (defesa + 1.0);
+}
+
+int calculaDanoMagico(float danoMagico, float defesaMagica){
+    defesaMagica = defesaMagica / 100.0;
+    return danoMagico / (defesaMagica + 1.0);
+}
+
 
 int seletorDeAcoes(Player player, inimigo inimigo){
     int escolha;
@@ -273,10 +283,7 @@ int seletorDeAcoes(Player player, inimigo inimigo){
     switch (escolha) {
         case 1:{
             cout << "Você ataca o inimigo fisicamente " << endl << endl;
-            float dano = (float) player.ataque;
-            float defesa = ((float) inimigo.defesa) / 100.0;
-            float calculoDeDano = dano / (defesa + 1.0);
-            danoCausado = (int) calculoDeDano;
+            danoCausado = calculaDanoFisico((float) player.ataque, (float) inimigo.defesa);
             break;
         }
         case 2:{
@@ -286,10 +293,7 @@ int seletorDeAcoes(Player player, inimigo inimigo){
         }
         case 3:{
             cout << "Você resolve chamar as forças aliadas" << endl;
-            float danoMagico = (float) player.magia();
-            float defesaMagica = ((float) inimigo.defesaMagica) / 100.0;
-            float calculoDeDano = danoMagico / (defesaMagica + 1.0);
-            danoCausado = (int) calculoDeDano;
+            danoCausado = calculaDanoMagico((float) player.magia(), (float) inimigo.defesaMagica);
             break;
         }
         default:{
@@ -301,6 +305,7 @@ int seletorDeAcoes(Player player, inimigo inimigo){
     return danoCausado;
 
 }
+
 
 
 //array com nomes de inimigos
@@ -360,7 +365,7 @@ void gerenciadorBatalha (Player player){
            cout << "Mana: " << player.mana << endl;
            cout << "-------------------------------------------------------------" << endl;
 
-           int dano = player.action();
+           int dano = seletorDeAcoes(player, enemy);
 
            enemy.damangeRecieve(dano);
 
@@ -375,7 +380,7 @@ void gerenciadorBatalha (Player player){
                 usleep(2000000);
                 system("clear");
 
-                player.damangeRecieve(enemy.ataque);
+                player.damangeRecieve(calculaDanoFisico((float) enemy.ataque, (float) player.defesa));
                 cout << " O inimigo lhe causou  " << enemy.ataque << " de dano" << endl << endl;
 
                 usleep(3000000);
