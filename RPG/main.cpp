@@ -111,7 +111,7 @@ struct Player{
 
             if(mana >= 10){
                 mana -= 10;
-                system("cls");
+                system("clear");
                 cout <<"-------------------------------------------------------------" << endl;
                 cout << "Você gastou 10 de mana para conjurar o feitiço";
                 cout << mana;
@@ -293,7 +293,7 @@ void gerenciadorBatalha (Player player){
     cout << "Um novo inimigo surge :" <<endl ;
     cout << "" <<endl;
     usleep(3000000);
-    system("cls");
+    system("clear");
     cout<< enemy.nome << endl;
 
     while(alive == true){
@@ -318,12 +318,12 @@ void gerenciadorBatalha (Player player){
             cout<< " de dano em  " << enemy.nome << endl;
             cout<<""<<endl;
             usleep(4000000);
-            system("cls");
+            system("clear");
             if(enemy.status){
             cout<<"Turno inimigo"<<endl;
             cout<<""<<endl;
             usleep(2000000);
-            system("cls");
+            system("clear");
 
             player.damangeRecieve(enemy.ataque);
             cout << " O inimigo lhe causou  " << enemy.ataque;
@@ -345,7 +345,7 @@ void gerenciadorBatalha (Player player){
 
             else {
                 cout << "Você Morreu";
-                system("cls");
+                system("clear");
                 cout << "Game Over";
             }
           }
