@@ -206,8 +206,8 @@ void damangeRecieve(int dano){
         cout << "Pontos de defesa: " << defesa << endl;
         cout << "Velocidade: " << velocidade << endl;
         cout << "Pontos de defesa magica: " << defesaMagica << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        cout << "" << endl;
+        cout << "-------------------------------------------------------------" << endl << endl;
+
     }
 
 };
@@ -226,14 +226,14 @@ struct inimigo{
         cout << "" << endl;
         cout << "-------------------------------------------------------------" << endl;
         cout << "Informações do Inimigo:  " << nome << endl;
-        cout << nome;
         cout << "HP: " << hp << endl;
         cout << "Velocidade: " << velocidade << endl;
         cout << "Pontos de ataque: " << ataque << endl;
         cout << "Pontos de defesa: " << defesa << endl;
         cout << "Pontos de defesa magica: " << defesaMagica << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        cout << "" << endl;}
+        cout << "-------------------------------------------------------------" << endl << endl;
+
+    }
 
      // remove a quantidade recebida do hp do inimigo
     void damangeRecieve(int dano){
@@ -257,6 +257,7 @@ string enemyname[] = {"morcego","dragão", "troll","goblin","orc","mago negro","r
 inimigo enemyMaker (Player player){
 
     inimigo i;
+    srand (time(NULL));
     int indice = rand()% 15;
     string nome = enemyname[indice];
 
@@ -308,23 +309,20 @@ void gerenciadorBatalha (Player player){
 
            enemy.damangeRecieve(dano);
 
-           cout<< "Voce causou "<< dano;
-           cout<< " de dano em  " << enemy.nome << endl;
-           cout<<""<<endl;
+           cout<< "Voce causou "<< dano << " de dano em " << enemy.nome << endl << endl;
 
            usleep(4000000);
            system("clear");
 
            if(enemy.status){
-                cout<<"Turno inimigo"<<endl;
-                cout<<""<<endl;
+                cout << "Turno inimigo" << endl << endl;
+
                 usleep(2000000);
                 system("clear");
 
                 player.damangeRecieve(enemy.ataque);
-                cout << " O inimigo lhe causou  " << enemy.ataque;
-                cout << " de dano" << endl;
-                cout << "" << endl;
+                cout << " O inimigo lhe causou  " << enemy.ataque << " de dano" << endl << endl;
+
                 usleep(3000000);
 
             }
