@@ -2,10 +2,20 @@
 1510437392 source:c:\users\pedro\desktop\projetoaplp\rpg\main.cpp
 	<iostream>
 
+1510437392 
+
 1510700184 source:c:\users\pc1\desktop\gitproject\rpg\main.cpp
 	<iostream>
 	<stdlib.h>
 	<locale.h>
 	<unistd.h>
 	<windows.h>
+
+1510700184 >
+
+1510765353 source:/home/bruno/Documentos/RPG/RPG/main.cpp
+	<iostream>
+	<stdlib.h>
+	<locale.h>
+	<unistd.h>
 
