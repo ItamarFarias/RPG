@@ -7,6 +7,21 @@
 using namespace std;
 using namespace std;
 
+struct Magia{
+    int dano;
+    int mana;
+    int lvl;
+}explosion, thundara;
+
+int calculaDanoFisico(float dano, float defesa){
+    defesa = defesa / 100.0;
+    return dano / (defesa + 1.0);
+}
+
+int calculaDanoMagico(float danoMagico, float defesaMagica){
+    defesaMagica = defesaMagica / 100.0;
+    return danoMagico / (defesaMagica + 1.0);
+}
 
 struct Player{
 
@@ -16,6 +31,7 @@ struct Player{
     int velocidade = 15; // Pontos de velocidade do jogador (influencia em quem ataca primeiro)
     int exp = 0; // Pontos de experiencia do jogador
     int ataque = 10; // pontos de ataque do jogador
+    int danoMagico = 20;
     int defesa = 10; // pontos de defesa do jogador
     int defesaMagica = 15; // pontos de defesa magica do jogador
     int controlNivel = 100; // quando os pontos de experiencia do jogador atigem o valor dessa variavel o jogador passa de nivel
@@ -37,6 +53,55 @@ struct Player{
         cout << "-------------------------------------------------------------" << endl << endl;
 
     }
+
+    void printAcoes(){
+
+        cout << "" << endl;
+        cout << "-------------------------------------------------------------" << endl;
+        cout << "Selecione uma ação :" << endl;
+        cout << "1 - Atague fisico "<< endl;
+        cout << "2 - Cura  " << endl;
+        cout << "3 - Magia " << endl << endl;
+        cout << "-------------------------------------------------------------" << endl << endl << endl;
+
+    }
+
+    int seletorDeAcoes(int defesa, int defesaMagica){
+        int escolha;
+        int danoCausado;
+
+        printAcoes();
+
+        cout << "Digite o numero referente a ação desejada : ";
+        cin >> escolha;
+        cout << "" << endl;
+
+        switch (escolha) {
+            case 1:{
+                cout << "Você ataca o inimigo fisicamente " << endl << endl;
+                danoCausado = calculaDanoFisico((float) ataque, (float) defesa);
+                break;
+        }
+        case 2:{
+            cout << "Você sente que precisa recuperar suas energias" << endl;
+            danoCausado = cura();
+            break;
+        }
+        case 3:{
+            cout << "Você resolve chamar as forças aliadas" << endl;
+            float magicalDamange = (float) magic();
+            danoCausado = calculaDanoMagico(magicalDamange, defesaMagica);
+            break;
+        }
+        default:{
+            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
+            danoCausado = seletorDeAcoes(defesa, defesaMagica);
+        }
+    }
+
+    return danoCausado;
+
+}
 
 // Responsavel por realizar ação escolhida pelo jogador
     int action(){
@@ -129,7 +194,84 @@ struct Player{
      return dano;
 
     }
+    int magic(){
+        explosion.dano = int (((float) danoMagico) * 1.25);
+        explosion.mana = 10 * nivel;
+        explosion.lvl = 1;
 
+        thundara.dano = int (((float) danoMagico) * 1.30);
+        thundara.mana = 15 * nivel;
+        thundara.lvl = 2;
+
+        if(nivel >= explosion.lvl){
+            cout << "-------------------------------------------------------------" << endl;
+            cout << " 1 - Explosion|Consome " << explosion.mana << " de mana| causa " << explosion.dano <<" de dano"<< endl;
+            cout << "-------------------------------------------------------------" << endl << endl;
+        }if(nivel >= thundara.lvl){
+            cout << "-------------------------------------------------------------" << endl;
+            cout << " 1 - Explosion|Consome " << thundara.mana << " de mana| causa " << thundara.dano <<" de dano"<< endl;
+            cout << "-------------------------------------------------------------" << endl << endl;
+        }
+
+        cout << "Selecione o numero referente a magia desejada: ";
+
+        int escolha;
+        cin >> escolha;
+
+        int danoCausado = 0;
+
+        switch(escolha){
+        case 1:
+            if(mana >= explosion.mana){
+                mana -= explosion.mana;
+
+                system("clear");
+
+                cout <<"-------------------------------------------------------------" << endl;
+                cout << "Você gastou " << explosion.mana << " de mana para chamar Megumin";
+                cout << mana;
+                cout << " / ";
+                cout << manaMax << endl;
+                cout <<"-------------------------------------------------------------" << endl;
+                cout << "Megumin, aquela que detem todo o poder do fogo e da explosao, eu a invoco, subjulgue meus inimigos: EXPLOSION!!!" << endl << endl;
+
+                danoCausado = explosion.dano;
+            }
+            else {
+                cout << "Voce não possui mana  suficiente para conjurar tal arte" << endl;
+            }
+            break;
+        case 2:
+            if(nivel <= thundara.lvl){
+
+                cout << endl << "Voce ainda nao é forte o suficiente para fazer esse chamado" << endl << endl;
+                break;
+            }
+            if(mana >= thundara.mana){
+                mana -= thundara.mana;
+
+                system("clear");
+
+                cout <<"-------------------------------------------------------------" << endl;
+                cout << "Você gastou " << thundara.mana << " de mana para chamar Thor ";
+                cout << mana;
+                cout << " / ";
+                cout << manaMax << endl;
+                cout <<"-------------------------------------------------------------" << endl;
+                cout << "Grande Thor, digno do poderoso Mjolnir venha até meus inimigos como o trovao: THUNDARA!!!" << endl << endl;
+
+                danoCausado = thundara.dano;
+            }
+            else {
+                cout << "Voce não possui mana  suficiente para conjurar tal arte" << endl;
+            }
+            break;
+        default:
+            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
+        }
+        return danoCausado;
+
+    }
 // Metodo que enche o hp do personagem ao custo de mana
     int cura(){
         int totalDeCura = hpMax / 2;
@@ -247,64 +389,6 @@ struct inimigo{
 
 };
 
-void printAcoes(){
-
-    cout << "" << endl;
-    cout << "-------------------------------------------------------------" << endl;
-    cout << "Selecione uma ação :" << endl;
-    cout << "1 - Atague fisico "<< endl;
-    cout << "2 - Cura  " << endl;
-    cout << "3 - Magia " << endl << endl;
-    cout << "-------------------------------------------------------------" << endl << endl << endl;
-
-}
-
-int calculaDanoFisico(float dano, float defesa){
-    defesa = defesa / 100.0;
-    return dano / (defesa + 1.0);
-}
-
-int calculaDanoMagico(float danoMagico, float defesaMagica){
-    defesaMagica = defesaMagica / 100.0;
-    return danoMagico / (defesaMagica + 1.0);
-}
-
-
-int seletorDeAcoes(Player player, inimigo inimigo){
-    int escolha;
-    int danoCausado ;
-
-    printAcoes();
-
-    cout << "Digite o numero referente a ação desejada : ";
-    cin >> escolha;
-    cout << "" << endl;
-
-    switch (escolha) {
-        case 1:{
-            cout << "Você ataca o inimigo fisicamente " << endl << endl;
-            danoCausado = calculaDanoFisico((float) player.ataque, (float) inimigo.defesa);
-            break;
-        }
-        case 2:{
-            cout << "Você sente que precisa recuperar suas energias" << endl;
-            danoCausado = player.cura();
-            break;
-        }
-        case 3:{
-            cout << "Você resolve chamar as forças aliadas" << endl;
-            danoCausado = calculaDanoMagico((float) player.magia(), (float) inimigo.defesaMagica);
-            break;
-        }
-        default:{
-            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
-            danoCausado = seletorDeAcoes(player, inimigo);
-        }
-    }
-
-    return danoCausado;
-
-}
 
 
 
@@ -365,7 +449,7 @@ void gerenciadorBatalha (Player player){
            cout << "Mana: " << player.mana << endl;
            cout << "-------------------------------------------------------------" << endl;
 
-           int dano = seletorDeAcoes(player, enemy);
+           int dano = player.seletorDeAcoes(enemy.defesa, enemy.defesaMagica);
 
            enemy.damangeRecieve(dano);
 
@@ -380,8 +464,10 @@ void gerenciadorBatalha (Player player){
                 usleep(2000000);
                 system("clear");
 
-                player.damangeRecieve(calculaDanoFisico((float) enemy.ataque, (float) player.defesa));
-                cout << " O inimigo lhe causou  " << enemy.ataque << " de dano" << endl << endl;
+                int danoCalculado = calculaDanoFisico((float) enemy.ataque, (float) player.defesa);
+                player.damangeRecieve(danoCalculado);
+
+                cout << " O inimigo lhe causou  " << danoCalculado << " de dano" << endl << endl;
 
                 usleep(3000000);
 
