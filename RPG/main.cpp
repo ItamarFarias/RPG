@@ -468,6 +468,7 @@ void gerenciadorBatalha (Player player){
         }
     }
 
+
     while(alive == true){
 
         alive = false;
@@ -485,7 +486,6 @@ void gerenciadorBatalha (Player player){
            cout << "-------------------------------------------------------------" << endl;
 
            int dano = player.seletorDeAcoes(enemy.defesa, enemy.defesaMagica);
-
            enemy.damangeRecieve(dano);
 
            cout<< "Voce causou "<< dano << " de dano em " << enemy.nome << endl << endl;
