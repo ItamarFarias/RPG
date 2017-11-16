@@ -7,6 +7,21 @@
 using namespace std;
 using namespace std;
 
+struct Aliados{
+
+    int hp;
+    //int hpMax = 300; pode ser implementado para que um aliado possa se curar
+    int ataque;
+    int danoMagico;
+    int defesa;
+    int defesaMagica;
+    int velocidade;
+    int mana;
+    int manaMax;
+    bool status;
+
+}susanoo, amaterasu, tsukuyomi, xehanort;
+
 struct Magia{
     int dano;
     int mana;
@@ -51,6 +66,46 @@ struct Player{
         nomeDoJogador = novoNome;
 
         cout << "-------------------------------------------------------------" << endl << endl;
+
+    }
+
+    void setAliados(){
+
+        susanoo.hp = int (((float) hp) * 1.50);
+        susanoo.ataque = int (((float) ataque) * 1.35);
+        susanoo.danoMagico = int (((float) danoMagico) * 0.25);
+        susanoo.defesa = int (((float) defesa) * 1.25);
+        susanoo.defesaMagica = int (((float) defesaMagica) * 0.75);
+        susanoo.velocidade = int (((float) velocidade) * 0.95);
+        susanoo.mana = int (((float) mana) * 0.30);
+        susanoo.manaMax = int (((float) mana) * 0.30);
+
+        amaterasu.hp = int (((float) hp) * 1.0);
+        amaterasu.ataque = int (((float) ataque) * 0.50);
+        amaterasu.danoMagico = int (((float) danoMagico) * 1.50);
+        amaterasu.defesa = int (((float) defesa) * 0.90);
+        amaterasu.defesaMagica = int (((float) defesaMagica) * 1.25);
+        amaterasu.velocidade = int (((float) velocidade) * 0.90);
+        amaterasu.mana = int (((float) mana) * 1.60);
+        amaterasu.manaMax = int (((float) mana) * 1.60);
+
+        tsukuyomi.hp = int (((float) hp) * 1.20);
+        tsukuyomi.ataque = int (((float) ataque) * 1.15);
+        tsukuyomi.danoMagico = int (((float) danoMagico) * 1.15);
+        tsukuyomi.defesa = int (((float) defesa) * 1.15);
+        tsukuyomi.defesaMagica = int (((float) defesaMagica) * 1.10);
+        tsukuyomi.velocidade = int (((float) velocidade) * 0.80);
+        tsukuyomi.mana = int (((float) mana) * 1.0);
+        tsukuyomi.manaMax = int (((float) mana) * 1.0);
+
+        xehanort.hp = int (((float) hp) * 2.0);
+        xehanort.ataque = int (((float) ataque) * 1.75);
+        xehanort.danoMagico = int (((float) danoMagico) * 1.0);
+        xehanort.defesa = int (((float) defesa) * 1.60);
+        xehanort.defesaMagica = int (((float) defesaMagica) * 1.0);
+        xehanort.velocidade = int (((float) velocidade) * 2.0);
+        xehanort.mana = int (((float) mana) * 1.0);
+        xehanort.manaMax = int (((float) mana) * 1.0);
 
     }
 
