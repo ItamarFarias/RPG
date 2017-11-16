@@ -66,6 +66,7 @@ struct Player{
 
     }
 
+    // Responsavel por realizar ação escolhida pelo jogador
     int seletorDeAcoes(int defesa, int defesaMagica){
         int escolha;
         int danoCausado;
@@ -103,97 +104,9 @@ struct Player{
 
 }
 
-// Responsavel por realizar ação escolhida pelo jogador
-    int action(){
-        string escolha;
-        int danocausado ;
-
-        cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        cout << "Selecione uma ação :" << endl;
-        cout << "1 - Atague fisico "<< endl;
-        cout << "2 - Cura  " << endl;
-        cout << "3 - Magia " << endl;
-        cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl << endl << endl;
-        cout << "Digite o numero referente a ação desejada : ";
-        cin >> escolha;
-        cout << "" << endl;
-
-        if(escolha == "1"){
-
-            cout << "Você ataca o inimigo fisicamente " << endl << endl;
-            danocausado =  ataque;
-        }
-
-        else if( escolha == "2"){
-
-            cout << "Você sente que precisa recuperar suas energias" << endl;
-            danocausado = cura();
-
-        }
-
-        else if ( escolha == "3"){
-
-            cout << "Você resolve usar artes arcanas" << endl;
-            danocausado = magia();
-
-        }
-
-        else{
-            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
-            danocausado = action();
-
-        }
-
-     return danocausado;
-
-    }
-
-    // este metodo contem apenas uma magia por enquanto
+    // este metodo contem magias
     // retorna -1 caso o jogador nao possua os requisitos
     // caso possua retorna o dano
-    int magia(){
-        string escolha ;
-        int dano = -1 ;
-
-        cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        cout << " 1 - Fogo Arcano|Consome 10 de mana| causa 30 de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
-        cout << "Selecione o numero referente a magia desejada: ";
-
-        cin >> escolha;
-
-        if(escolha == "1"){
-
-            if(mana >= 10){
-                mana -= 10;
-
-                system("clear");
-
-                cout <<"-------------------------------------------------------------" << endl;
-                cout << "Você gastou 10 de mana para conjurar o feitiço ";
-                cout << mana;
-                cout << " / ";
-                cout << manaMax << endl;
-                cout <<"-------------------------------------------------------------" << endl;
-                cout << "Uma esfera de fogo surge em sua mão" << endl << endl;
-
-                dano =  30;
-            }
-            else {
-                cout << "Voce não possui mana  suficiente para conjurar tal arte" << endl;
-            }
-        }
-
-        else{
-            cout << "Opção invalida : por favor selecione uma opção valida " << endl;
-        }
-
-     return dano;
-
-    }
     int magic(){
         explosion.dano = int (((float) danoMagico) * 1.25);
         explosion.mana = 10 * nivel;
