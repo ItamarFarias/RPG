@@ -19,6 +19,7 @@ struct Aliados{
     int mana;
     int manaMax;
     bool status;
+    int lvl;
 
 }susanoo, amaterasu, tsukuyomi, xehanort;
 
@@ -69,45 +70,6 @@ struct Player{
 
     }
 
-    void setAliados(){
-
-        susanoo.hp = int (((float) hp) * 1.50);
-        susanoo.ataque = int (((float) ataque) * 1.35);
-        susanoo.danoMagico = int (((float) danoMagico) * 0.25);
-        susanoo.defesa = int (((float) defesa) * 1.25);
-        susanoo.defesaMagica = int (((float) defesaMagica) * 0.75);
-        susanoo.velocidade = int (((float) velocidade) * 0.95);
-        susanoo.mana = int (((float) mana) * 0.30);
-        susanoo.manaMax = int (((float) mana) * 0.30);
-
-        amaterasu.hp = int (((float) hp) * 1.0);
-        amaterasu.ataque = int (((float) ataque) * 0.50);
-        amaterasu.danoMagico = int (((float) danoMagico) * 1.50);
-        amaterasu.defesa = int (((float) defesa) * 0.90);
-        amaterasu.defesaMagica = int (((float) defesaMagica) * 1.25);
-        amaterasu.velocidade = int (((float) velocidade) * 0.90);
-        amaterasu.mana = int (((float) mana) * 1.60);
-        amaterasu.manaMax = int (((float) mana) * 1.60);
-
-        tsukuyomi.hp = int (((float) hp) * 1.20);
-        tsukuyomi.ataque = int (((float) ataque) * 1.15);
-        tsukuyomi.danoMagico = int (((float) danoMagico) * 1.15);
-        tsukuyomi.defesa = int (((float) defesa) * 1.15);
-        tsukuyomi.defesaMagica = int (((float) defesaMagica) * 1.10);
-        tsukuyomi.velocidade = int (((float) velocidade) * 0.80);
-        tsukuyomi.mana = int (((float) mana) * 1.0);
-        tsukuyomi.manaMax = int (((float) mana) * 1.0);
-
-        xehanort.hp = int (((float) hp) * 2.0);
-        xehanort.ataque = int (((float) ataque) * 1.75);
-        xehanort.danoMagico = int (((float) danoMagico) * 1.0);
-        xehanort.defesa = int (((float) defesa) * 1.60);
-        xehanort.defesaMagica = int (((float) defesaMagica) * 1.0);
-        xehanort.velocidade = int (((float) velocidade) * 2.0);
-        xehanort.mana = int (((float) mana) * 1.0);
-        xehanort.manaMax = int (((float) mana) * 1.0);
-
-    }
 
     void printAcoes(){
 
@@ -383,7 +345,74 @@ inimigo enemyMaker (Player player){
     return i;
 
 }
+void setSusanoo(Player player){
 
+    susanoo.hp = int (((float) player.hp) * 1.50);
+    susanoo.ataque = int (((float) player.ataque) * 1.35);
+    susanoo.danoMagico = int (((float) player.danoMagico) * 0.25);
+    susanoo.defesa = int (((float) player.defesa) * 1.25);
+    susanoo.defesaMagica = int (((float) player.defesaMagica) * 0.75);
+    susanoo.velocidade = int (((float) player.velocidade) * 0.95);
+    susanoo.mana = int (((float) player.mana) * 0.30);
+    susanoo.manaMax = int (((float) player.mana) * 0.30);
+    susanoo.status = true;
+    susanoo.lvl = 1;
+
+}
+
+void setAmaterasu(Player player){
+
+    amaterasu.hp = int (((float) player.hp) * 1.0);
+    amaterasu.ataque = int (((float) player.ataque) * 0.50);
+    amaterasu.danoMagico = int (((float) player.danoMagico) * 1.50);
+    amaterasu.defesa = int (((float) player.defesa) * 0.90);
+    amaterasu.defesaMagica = int (((float) player.defesaMagica) * 1.25);
+    amaterasu.velocidade = int (((float) player.velocidade) * 0.90);
+    amaterasu.mana = int (((float) player.mana) * 1.60);
+    amaterasu.manaMax = int (((float) player.mana) * 1.60);
+    amaterasu.status = true;
+    amaterasu.lvl = 2;
+
+}
+
+void setTsukuyomi(Player player){
+    tsukuyomi.hp = int (((float) player.hp) * 1.20);
+    tsukuyomi.ataque = int (((float) player.ataque) * 1.15);
+    tsukuyomi.danoMagico = int (((float) player.danoMagico) * 1.15);
+    tsukuyomi.defesa = int (((float) player.defesa) * 1.15);
+    tsukuyomi.defesaMagica = int (((float) player.defesaMagica) * 1.10);
+    tsukuyomi.velocidade = int (((float) player.velocidade) * 0.80);
+    tsukuyomi.mana = int (((float) player.mana) * 1.0);
+    tsukuyomi.manaMax = int (((float) player.mana) * 1.0);
+    tsukuyomi.status = true;
+    tsukuyomi.lvl = 3;
+
+}
+
+void setXehanort(Player player){
+
+    xehanort.hp = int (((float) player.hp) * 2.0);
+    xehanort.ataque = int (((float) player.ataque) * 1.75);
+    xehanort.danoMagico = int (((float) player.danoMagico) * 1.0);
+    xehanort.defesa = int (((float) player.defesa) * 1.60);
+    xehanort.defesaMagica = int (((float) player.defesaMagica) * 1.0);
+    xehanort.velocidade = int (((float) player.velocidade) * 2.0);
+    xehanort.mana = int (((float) player.mana) * 1.0);
+    xehanort.manaMax = int (((float) player.mana) * 1.0);
+    xehanort.status = true;
+    xehanort.lvl = 4;
+
+}
+
+void imprimeAliados(){
+
+    string aliados[] = {"Susano-o", "Amaterasu", "Tsukuyomi", "Xehanort"};
+
+    for(int i = 0; i < 4; i++){
+        cout << " " << i+1 << " - " << aliados[i] <<"          nivel necessario: " << i+1 << endl;
+    }
+
+}
 
 // responsavel por controlar o sitema de batalha do jogo
 // recebe um jogador e um inteiro com o numero de inimigos
@@ -400,6 +429,44 @@ void gerenciadorBatalha (Player player){
     system("clear");
 
     cout<< enemy.nome << endl;
+
+    cout << endl << "Chame seus aliados" << endl << endl;
+    cout << "Aliados disponiveis:" << endl;
+
+    imprimeAliados();
+    int aliado = 0;
+    int n;              //numero de aliados
+    player.nivel == 1 ? n = 1 : n = 0;
+    int opcao;
+
+    while(n < 2){
+        cout << "Digite o numero referente ao aliado desejado : ";
+        cin >> opcao;
+
+        if(opcao > player.nivel){
+            cout << "Voce ainda não tem forças para realizar esse chamado" << endl << endl;
+        }else{
+            if(opcao == 1 && opcao != aliado){
+                setSusanoo(player);
+                aliado = 1;
+                n++;
+            }else if(opcao == 2 && opcao != aliado){
+                setAmaterasu(player);
+                aliado = 2;
+                n++;
+            }else if(opcao == 3 && opcao != aliado){
+                setTsukuyomi(player);
+                aliado = 3;
+                n++;
+            }else if(opcao == 4 && opcao != aliado){
+                setXehanort(player);
+                aliado = 4;
+                n++;
+            }else{
+                cout << "Opcao invalida, tente novamente" << endl;
+            }
+        }
+    }
 
     while(alive == true){
 
