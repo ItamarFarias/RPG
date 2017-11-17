@@ -115,8 +115,8 @@ struct Player{
         }
         case 3:{
             cout << "Você resolve chamar as forças aliadas" << endl;
-            float magicalDamange = (float) magic();
-            danoCausado = calculaDanoMagico(magicalDamange, defesaMagica);
+            float magicalDamage = (float) magic();
+            danoCausado = calculaDanoMagico(magicalDamage, defesaMagica);
             break;
         }
         default:{
@@ -235,7 +235,7 @@ struct Player{
     }
 
 // Remove hp do jogador de acordo com o dano sofrido
-    void damangeRecieve(int dano){
+    void damageRecieve(int dano){
 
         hp -= dano ;
         if(hp <= 0){
@@ -321,7 +321,7 @@ struct inimigo{
     }
 
      // remove a quantidade recebida do hp do inimigo
-    void damangeRecieve(int dano){
+    void damageRecieve(int dano){
 
         hp -= dano ;
         if(hp <= 0){
@@ -437,7 +437,7 @@ void enemyFirst (Player player , inimigo enemy) {
                 system("clear");
 
                 int danoCalculado = calculaDanoFisico((float) enemy.ataque, (float) player.defesa);
-                player.damangeRecieve(danoCalculado);
+                player.damageRecieve(danoCalculado);
 
                 cout << " O inimigo lhe causou  " << danoCalculado << " de dano" << endl << endl;
 
@@ -670,7 +670,7 @@ void gerenciadorBatalha (Player player){
            separator();
 
            int dano = player.seletorDeAcoes(enemy.defesa, enemy.defesaMagica);
-           enemy.damangeRecieve(dano);
+           enemy.damageRecieve(dano);
 
            cout<< "Voce causou "<< dano << " de dano em " << enemy.nome << endl << endl;
 
@@ -700,7 +700,7 @@ void gerenciadorBatalha (Player player){
                         int dano = ataqueAliado(aliado[0]);
                         dano = calculaDanoFisico(dano, enemy.defesa);
                         cout << "causando " << dano << " de dano" << endl;
-                        enemy.damangeRecieve(dano);
+                        enemy.damageRecieve(dano);
                         break;
                     }
 
@@ -709,7 +709,7 @@ void gerenciadorBatalha (Player player){
                         int dano = magiaAliado(aliado[0]);
                         dano = calculaDanoMagico(dano, enemy.defesaMagica);
                         cout << aliado[0] << " causou " << dano << " de dano" << endl << endl;
-                        enemy.damangeRecieve(dano);
+                        enemy.damageRecieve(dano);
                         break;
                     }
                 }
@@ -722,7 +722,7 @@ void gerenciadorBatalha (Player player){
                 system("clear");
 
                 int danoCalculado = calculaDanoFisico((float) enemy.ataque, (float) player.defesa);
-                player.damangeRecieve(danoCalculado);
+                player.damageRecieve(danoCalculado);
 
                 cout << " O inimigo lhe causou  " << danoCalculado << " de dano" << endl << endl;
 
