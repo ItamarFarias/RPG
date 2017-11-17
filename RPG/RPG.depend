@@ -19,3 +19,9 @@
 	<locale.h>
 	<unistd.h>
 
+1510933046 source:/home/brunofs/Downloads/RPG-linux/RPG/main.cpp
+	<iostream>
+	<stdlib.h>
+	<locale.h>
+	<unistd.h>
+
