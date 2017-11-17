@@ -414,10 +414,113 @@ void imprimeAliados(){
 
 }
 
+void enemyFirst (Player player , inimigo enemy) {
+
+    cout << "Turno inimigo" << endl << endl;
+
+                usleep(2000000);
+                system("clear");
+
+                int danoCalculado = calculaDanoFisico((float) enemy.ataque, (float) player.defesa);
+                player.damangeRecieve(danoCalculado);
+
+                cout << " O inimigo lhe causou  " << danoCalculado << " de dano" << endl << endl;
+
+                usleep(3000000);
+
+}
+
+int ataqueAliado(string aliado){
+    int danoCausado;
+
+    if(aliado == "Susano-o"){
+
+        danoCausado = susanoo.ataque;
+
+    }else if(aliado == "Amaterasu"){
+
+        danoCausado = amaterasu.ataque;
+
+      }else if(aliado == "Tsukuyomi"){
+
+        danoCausado = tsukuyomi.ataque;
+
+    }else if(aliado == "Xehanort"){
+
+        danoCausado = xehanort.ataque;
+    }
+    return danoCausado;
+
+}
+
+int magiaAliado(string aliado){
+    int danoCausado;
+    if(aliado == "Susano-o"){
+        cout << "-------------------------------------------------------------" << endl;
+        cout << " 1 - Kusanagi|Consome 20 de mana| causa " << susanoo.danoMagico <<" de dano"<< endl;
+        cout << "-------------------------------------------------------------" << endl << endl;
+
+        cout << "Escolha a magia: ";
+        int escolha;
+        cin >> escolha;
+
+        if(escolha == 1){
+            danoCausado = susanoo.danoMagico;
+        }else{
+            cout << "Magia invalida";
+            danoCausado = 0;
+        }
+      }else if(aliado == "Amaterasu"){
+        cout << "-------------------------------------------------------------" << endl;
+        cout << " 1 - Kusanagi|Consome 20 de mana| causa " << amaterasu.danoMagico <<" de dano"<< endl;
+        cout << "-------------------------------------------------------------" << endl << endl;
+
+        cout << "Escolha a magia: ";
+        int escolha;
+        cin >> escolha;
+
+        if(escolha == 1){
+            danoCausado = amaterasu.danoMagico;
+        }else{
+            cout << "Magia invalida";
+        }
+      }else if(aliado == "Tsukuyomi"){
+        cout << "-------------------------------------------------------------" << endl;
+        cout << " 1 - Kusanagi|Consome 20 de mana| causa " << tsukuyomi.danoMagico <<" de dano"<< endl;
+        cout << "-------------------------------------------------------------" << endl << endl;
+
+        cout << "Escolha a magia: ";
+        int escolha;
+        cin >> escolha;
+
+        if(escolha == 1){
+            danoCausado = tsukuyomi.danoMagico;
+        }else{
+            cout << "Magia invalida";
+        }
+    }else if(aliado == "Xehanort"){
+        cout << "-------------------------------------------------------------" << endl;
+        cout << " 1 - Kusanagi|Consome 20 de mana| causa " << xehanort.danoMagico <<" de dano"<< endl;
+        cout << "-------------------------------------------------------------" << endl << endl;
+
+        cout << "Escolha a magia: ";
+        int escolha;
+        cin >> escolha;
+
+        if(escolha == 1){
+            danoCausado = xehanort.danoMagico;
+        }else{
+            cout << "Magia invalida";
+        }
+    }
+
+}
 // responsavel por controlar o sitema de batalha do jogo
 // recebe um jogador e um inteiro com o numero de inimigos
 void gerenciadorBatalha (Player player){
 
+    srand(time(NULL));
+    int number = rand();
     inimigo enemy;
     enemy = enemyMaker(player);
     bool alive = true;
@@ -430,11 +533,15 @@ void gerenciadorBatalha (Player player){
 
     cout<< enemy.nome << endl;
 
+    if(number%2 == 0){
+        enemyFirst(player, enemy);
+    }
+
     cout << endl << "Chame seus aliados" << endl << endl;
     cout << "Aliados disponiveis:" << endl;
 
     imprimeAliados();
-    int aliado = 0;
+    string aliado[] = { "", ""};
     int n;              //numero de aliados
     player.nivel == 1 ? n = 1 : n = 0;
     int opcao;
@@ -446,27 +553,29 @@ void gerenciadorBatalha (Player player){
         if(opcao > player.nivel){
             cout << "Voce ainda não tem forças para realizar esse chamado" << endl << endl;
         }else{
-            if(opcao == 1 && opcao != aliado){
+            if(opcao == 1 && "Susano-o" != aliado[0]){
                 setSusanoo(player);
-                aliado = 1;
+                aliado[0] == "" ? aliado[0] = "Susano-o" : aliado[1] = "Susano-o";
                 n++;
-            }else if(opcao == 2 && opcao != aliado){
+            }else if(opcao == 2 && "Amaterasu"  != aliado[0]){
                 setAmaterasu(player);
-                aliado = 2;
+                aliado[0] == "" ? aliado[0] = "Amaterasu" : aliado[1] = "Amaterasu" ;
                 n++;
-            }else if(opcao == 3 && opcao != aliado){
+            }else if(opcao == 3 && "Tsukuyomi" != aliado[0]){
                 setTsukuyomi(player);
-                aliado = 3;
+                aliado[0] == "" ? aliado[0] = "Tsukuyomi" : aliado[1] = "Tsukuyomi";
                 n++;
-            }else if(opcao == 4 && opcao != aliado){
+            }else if(opcao == 4 && "Xehanort" != aliado[0]){
                 setXehanort(player);
-                aliado = 4;
+                aliado[0] == "" ? aliado[0] = "Xehanort" : aliado[1] = "Xehanort";
                 n++;
             }else{
                 cout << "Opcao invalida, tente novamente" << endl;
             }
         }
     }
+
+
 
 
     while(alive == true){
@@ -493,6 +602,43 @@ void gerenciadorBatalha (Player player){
            usleep(4000000);
            system("clear");
 
+           int n;
+           player.nivel == 1 ? n = 1 : n = 2;
+
+           for(int i = 0; i < n; i++){
+
+                cout << endl << "Turno de " << aliado[0] << endl;
+                cout << "-------------------------------------------------------------" << endl;
+                cout << "Selecione uma ação :" << endl;
+                cout << "1 - Atague fisico "<< endl;
+                cout << "2 - Magia " << endl << endl;
+                cout << "-------------------------------------------------------------" << endl << endl ;
+
+                int escolha;
+                cout << "Digite o numero referente a ação desejada : ";
+                cin >> escolha;
+                cout << "" << endl;
+
+                switch (escolha) {
+                    case 1:{
+                        cout << aliado[0] << " ataca o inimigo fisicamente ";
+                        int dano = ataqueAliado(aliado[0]);
+                        dano = calculaDanoFisico(dano, enemy.defesa);
+                        cout << "causando " << dano << " de dano" << endl;
+                        enemy.damangeRecieve(dano);
+                        break;
+                    }
+                    case 2:{
+                        cout << aliado[0] << " utiliza de suas forcas para invocar uma magia" << endl;
+                        int dano = magiaAliado(aliado[0]);
+                        dano = calculaDanoMagico(dano, enemy.defesaMagica);
+                        cout << aliado[0] << " causou " << dano << " de dano" << endl << endl;
+                        enemy.damangeRecieve(dano);
+                        break;
+                    }
+                }
+           }
+
            if(enemy.status){
                 cout << "Turno inimigo" << endl << endl;
 
@@ -508,9 +654,7 @@ void gerenciadorBatalha (Player player){
 
             }
 
-        }
-
-        else {
+        }else {
             if(enemy.status == false){
                 cout << "Voce venceu";
                 player.update(enemy.xpDrop);
@@ -526,7 +670,6 @@ void gerenciadorBatalha (Player player){
     }
 
 }
-
 
 int main()
 {
