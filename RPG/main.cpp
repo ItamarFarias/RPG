@@ -8,6 +8,12 @@ using namespace std;
 using namespace std;
 
  // ajudam o jogador durante a batalha , sao chamados de acordo com o nivel do jogador
+
+void separator (){
+    cout << "-------------------------------------------------------------" << endl;
+
+}
+
 struct Aliados{
 
     int hp;
@@ -61,14 +67,13 @@ struct Player{
     void changeName(){
 
         cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << "Digite o nome do seu personagem: ";
         string novoNome;
 
         getline(cin, novoNome); //Para pegar a linha toda
         nomeDoJogador = novoNome;
-
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
     }
 
@@ -76,12 +81,13 @@ struct Player{
     void printAcoes(){
 
         cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << "Selecione uma ação :" << endl;
         cout << "1 - Atague fisico "<< endl;
         cout << "2 - Cura  " << endl;
         cout << "3 - Magia " << endl << endl;
-        cout << "-------------------------------------------------------------" << endl << endl << endl;
+        separator();
+        cout << endl;
 
     }
 
@@ -136,13 +142,13 @@ struct Player{
         thundara.lvl = 2;
 
         if(nivel >= explosion.lvl){
-            cout << "-------------------------------------------------------------" << endl;
+            separator();
             cout << " 1 - Explosion|Consome " << explosion.mana << " de mana| causa " << explosion.dano <<" de dano"<< endl;
-            cout << "-------------------------------------------------------------" << endl << endl;
+            separator();
         }if(nivel >= thundara.lvl){
-            cout << "-------------------------------------------------------------" << endl;
+            separator();
             cout << " 2 - Thundara|Consome " << thundara.mana << " de mana| causa " << thundara.dano  * 2 <<" de dano"<< endl;
-            cout << "-------------------------------------------------------------" << endl << endl;
+            separator();
         }
 
         cout << "Selecione o numero referente a magia desejada: ";
@@ -159,12 +165,12 @@ struct Player{
 
                 system("clear");
 
-                cout <<"-------------------------------------------------------------" << endl;
+                separator();
                 cout << "Você gastou " << explosion.mana << " de mana para chamar Megumin";
                 cout << mana;
                 cout << " / ";
                 cout << manaMax << endl;
-                cout <<"-------------------------------------------------------------" << endl;
+                separator();
                 cout << "Megumin, aquela que detem todo o poder do fogo e da explosao, eu a invoco, subjulgue meus inimigos: EXPLOSION!!!" << endl << endl;
 
                 danoCausado = explosion.dano;
@@ -184,12 +190,12 @@ struct Player{
 
                 system("clear");
 
-                cout <<"-------------------------------------------------------------" << endl;
+                separator();
                 cout << "Você gastou " << thundara.mana << " de mana para chamar Thor ";
                 cout << mana;
                 cout << " / ";
                 cout << manaMax << endl;
-                cout <<"-------------------------------------------------------------" << endl;
+                separator();
                 cout << "Grande Thor, digno do poderoso Mjolnir venha até meus inimigos como o trovao: THUNDARA!!!" << endl << endl;
 
                 danoCausado = thundara.dano;
@@ -212,12 +218,12 @@ struct Player{
 
         system("clear");
 
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << "- Oh grande Frigg ouça meu chamado e me cure." << endl ;
         cout << "A atmosfera ilumina-se ao seu redor e você recupera " << totalDeCura << " hp" << endl << endl;
         cout << "Você gastou " << manaParaCura << " de mana";
         cout << mana << " / " << manaMax << endl;
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
 
         if(totalDeCura + hp >= hp)
             hp = hpMax;
@@ -241,9 +247,9 @@ struct Player{
 
 // faz alterações nos atributos do jogado quando o mesmo sobe de nivel
     int gerenciadorExp(){
-       cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
        cout << "Com o frenesi da batalha você sente um aumento subito de suas habilidades" <<endl;
-                cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
         if(exp >= controlNivel){
             hpMax+= hpMax/5;
             manaMax += manaMax/5;
@@ -275,7 +281,7 @@ struct Player{
 
     void imprimeInfoJogador(){
         cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << "Informacoes de " << nomeDoJogador <<":" <<endl;
         cout << "HP: " << hp << endl;
         cout << "Mana " << mana << endl;
@@ -285,7 +291,7 @@ struct Player{
         cout << "Pontos de defesa: " << defesa << endl;
         cout << "Velocidade: " << velocidade << endl;
         cout << "Pontos de defesa magica: " << defesaMagica << endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
     }
 
@@ -303,14 +309,14 @@ struct inimigo{
 
     void ImprimeInfoInimigo(){
         cout << "" << endl;
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << "Informações do Inimigo:  " << nome << endl;
         cout << "HP: " << hp << endl;
         cout << "Velocidade: " << velocidade << endl;
         cout << "Pontos de ataque: " << ataque << endl;
         cout << "Pontos de defesa: " << defesa << endl;
         cout << "Pontos de defesa magica: " << defesaMagica << endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
     }
 
@@ -356,14 +362,14 @@ inimigo enemyMaker (Player player){
 
 void setSusanoo(Player player){
 
-    susanoo.hp = int (((float) player.hp) * 1.50);
-    susanoo.ataque = int (((float) player.ataque) * 1.35);
-    susanoo.danoMagico = int (((float) player.danoMagico) * 0.25);
-    susanoo.defesa = int (((float) player.defesa) * 1.25);
-    susanoo.defesaMagica = int (((float) player.defesaMagica) * 0.75);
-    susanoo.velocidade = int (((float) player.velocidade) * 0.95);
-    susanoo.mana = int (((float) player.mana) * 0.30);
-    susanoo.manaMax = int (((float) player.mana) * 0.30);
+    susanoo.hp = int (player.hp * 1.50);
+    susanoo.ataque = int (player.ataque * 1.35);
+    susanoo.danoMagico = int (player.danoMagico * 0.25);
+    susanoo.defesa = int (player.defesa * 1.25);
+    susanoo.defesaMagica = int (player.defesaMagica * 0.75);
+    susanoo.velocidade = int (player.velocidade * 0.95);
+    susanoo.mana = int (player.mana * 0.30);
+    susanoo.manaMax = int (player.mana * 0.30);
     susanoo.status = true;
     susanoo.lvl = 1;
 
@@ -371,28 +377,28 @@ void setSusanoo(Player player){
 
 void setAmaterasu(Player player){
 
-    amaterasu.hp = int (((float) player.hp) * 1.0);
-    amaterasu.ataque = int (((float) player.ataque) * 0.50);
-    amaterasu.danoMagico = int (((float) player.danoMagico) * 1.50);
-    amaterasu.defesa = int (((float) player.defesa) * 0.90);
-    amaterasu.defesaMagica = int (((float) player.defesaMagica) * 1.25);
-    amaterasu.velocidade = int (((float) player.velocidade) * 0.90);
-    amaterasu.mana = int (((float) player.mana) * 1.60);
-    amaterasu.manaMax = int (((float) player.mana) * 1.60);
+    amaterasu.hp = int (player.hp * 1.0);
+    amaterasu.ataque = int ( player.ataque * 0.50);
+    amaterasu.danoMagico = int (player.danoMagico * 1.50);
+    amaterasu.defesa = int (player.defesa * 0.90);
+    amaterasu.defesaMagica = int (player.defesaMagica * 1.25);
+    amaterasu.velocidade = int (player.velocidade * 0.90);
+    amaterasu.mana = int (player.mana * 1.60);
+    amaterasu.manaMax = int (player.mana * 1.60);
     amaterasu.status = true;
     amaterasu.lvl = 2;
 
 }
 
 void setTsukuyomi(Player player){
-    tsukuyomi.hp = int (((float) player.hp) * 1.20);
-    tsukuyomi.ataque = int (((float) player.ataque) * 1.15);
-    tsukuyomi.danoMagico = int (((float) player.danoMagico) * 1.15);
-    tsukuyomi.defesa = int (((float) player.defesa) * 1.15);
-    tsukuyomi.defesaMagica = int (((float) player.defesaMagica) * 1.10);
-    tsukuyomi.velocidade = int (((float) player.velocidade) * 0.80);
-    tsukuyomi.mana = int (((float) player.mana) * 1.0);
-    tsukuyomi.manaMax = int (((float) player.mana) * 1.0);
+    tsukuyomi.hp = int ( player.hp * 1.20);
+    tsukuyomi.ataque = int ( player.ataque * 1.15);
+    tsukuyomi.danoMagico = int ( player.danoMagico * 1.15);
+    tsukuyomi.defesa = int ( player.defesa * 1.15);
+    tsukuyomi.defesaMagica = int ( player.defesaMagica * 1.10);
+    tsukuyomi.velocidade = int ( player.velocidade * 0.80);
+    tsukuyomi.mana = int ( player.mana * 1.0);
+    tsukuyomi.manaMax = int ( player.mana * 1.0);
     tsukuyomi.status = true;
     tsukuyomi.lvl = 3;
 
@@ -400,14 +406,14 @@ void setTsukuyomi(Player player){
 
 void setXehanort(Player player){
 
-    xehanort.hp = int (((float) player.hp) * 2.0);
-    xehanort.ataque = int (((float) player.ataque) * 1.75);
-    xehanort.danoMagico = int (((float) player.danoMagico) * 1.0);
-    xehanort.defesa = int (((float) player.defesa) * 1.60);
-    xehanort.defesaMagica = int (((float) player.defesaMagica) * 1.0);
-    xehanort.velocidade = int (((float) player.velocidade) * 2.0);
-    xehanort.mana = int (((float) player.mana) * 1.0);
-    xehanort.manaMax = int (((float) player.mana) * 1.0);
+    xehanort.hp = int ( player.hp * 2.0);
+    xehanort.ataque = int ( player.ataque * 1.75);
+    xehanort.danoMagico = int (player.danoMagico * 1.0);
+    xehanort.defesa = int (player.defesa * 1.60);
+    xehanort.defesaMagica = int (player.defesaMagica * 1.0);
+    xehanort.velocidade = int (player.velocidade * 2.0);
+    xehanort.mana = int (player.mana * 1.0);
+    xehanort.manaMax = int (player.mana * 1.0);
     xehanort.status = true;
     xehanort.lvl = 4;
 
@@ -465,9 +471,9 @@ int ataqueAliado(string aliado){
 int magiaAliado(string aliado){
     int danoCausado;
     if(aliado == "Susano-o"){
-        cout << "-------------------------------------------------------------" << endl;
+    separator();
         cout << " 1 - Kusanagi|Consome 20 de mana| causa " << susanoo.danoMagico <<" de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
         cout << "Escolha a magia: ";
         int escolha;
@@ -481,61 +487,69 @@ int magiaAliado(string aliado){
             danoCausado = 0;
         }
       }else if(aliado == "Amaterasu"){
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << " 1 - Hiken|Consome 20 de mana| causa " << amaterasu.danoMagico <<" de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
         cout << " 2 - Sun Blade|Consome 40 de mana| causa " << amaterasu.danoMagico  * 2 <<" de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
         cout << " 3 - Solar Spear|Consome 60 de mana| causa " << amaterasu.danoMagico * 3 <<" de dano"<< endl;
 
         cout << "Escolha a magia: ";
         int escolha;
         cin >> escolha;
 
-        if(escolha == 1){
+        switch(escolha){
+        case 1:{
+
             if(amaterasu.mana > 20){
             danoCausado = amaterasu.danoMagico;
             amaterasu.mana =  amaterasu.mana - 20;}
             else {
 
-             cout << "-------------------------------------------------------------" << endl << endl;
-             cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
-              cout << "-------------------------------------------------------------" << endl << endl;
+            separator();
+            cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
+            separator();
 
 
             }
 
-        }
-        else if(escolha == 2){
+            }
+
+
+        case 2:{
             if(amaterasu.mana > 40){
             danoCausado = amaterasu.danoMagico *2;
              amaterasu.mana =  amaterasu.mana - 40;}
              else {
 
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
                 cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
 
              }
+
         }
-           else if(escolha == 3){
-           if(amaterasu.mana < 60){
+        case 3:{
+            if(amaterasu.mana < 60){
             danoCausado = amaterasu.danoMagico *3;
             amaterasu.mana =  amaterasu.mana - 60;}
             else{
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
                 cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
             }
+
         }
 
-        else{
+        default:{
             cout << "Magia invalida";
         }
+        }
+
       }else if(aliado == "Tsukuyomi"){
-        cout << "-------------------------------------------------------------" << endl;
+      separator();
         cout << " 1 - Moon Blast|Consome 20 de mana| causa " << tsukuyomi.danoMagico <<" de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
         cout << "Escolha a magia: ";
         int escolha;
@@ -546,18 +560,18 @@ int magiaAliado(string aliado){
                 danoCausado = tsukuyomi.danoMagico;
                 tsukuyomi.mana = tsukuyomi.mana - 20;}
             else{
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
                 cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
 
             }
         }else{
             cout << "Magia invalida";
         }
     }else if(aliado == "Xehanort"){
-        cout << "-------------------------------------------------------------" << endl;
+        separator();
         cout << " 1 - Ethereal Blades|Consome 20 de mana| causa " << xehanort.danoMagico <<" de dano"<< endl;
-        cout << "-------------------------------------------------------------" << endl << endl;
+        separator();
 
         cout << "Escolha a magia: ";
         int escolha;
@@ -568,9 +582,9 @@ int magiaAliado(string aliado){
                 danoCausado = xehanort.danoMagico;
                 xehanort.mana = xehanort.mana - 20;}
             else{
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
                 cout << "Você não possui mana suficente para conjurar tal magia"<<endl;
-                cout << "-------------------------------------------------------------" << endl << endl;
+                separator();
             }
         }else{
             cout << "Magia invalida";
@@ -615,6 +629,7 @@ void gerenciadorBatalha (Player player){
 
         if(player.nivel < opcao){
             cout << "Voce ainda não tem forças para realizar esse chamado" << endl << endl;
+
         }else{
             if(opcao == 1 && "Susano-o" != aliado[0]){
                 setSusanoo(player);
@@ -638,10 +653,7 @@ void gerenciadorBatalha (Player player){
         }
     }
 
-
-
-
-    while(alive == true){
+    while(alive){
 
         alive = false;
 
@@ -652,10 +664,10 @@ void gerenciadorBatalha (Player player){
            usleep(3000000);
 
            cout << "Seu turno" << endl << endl;
-           cout << "-------------------------------------------------------------" << endl;
+           separator();
            cout << "HP: " << player.hp << endl;
            cout << "Mana: " << player.mana << endl;
-           cout << "-------------------------------------------------------------" << endl;
+           separator();
 
            int dano = player.seletorDeAcoes(enemy.defesa, enemy.defesaMagica);
            enemy.damangeRecieve(dano);
@@ -671,11 +683,11 @@ void gerenciadorBatalha (Player player){
            for(int i = 0; i < n; i++){
 
                 cout << endl << "Turno de " << aliado[0] << endl;
-                cout << "-------------------------------------------------------------" << endl;
+                separator();
                 cout << "Selecione uma ação :" << endl;
                 cout << "1 - Ataque fisico "<< endl;
                 cout << "2 - Magia " << endl << endl;
-                cout << "-------------------------------------------------------------" << endl << endl ;
+                separator();
 
                 int escolha;
                 cout << "Digite o numero referente a ação desejada : ";
@@ -691,6 +703,7 @@ void gerenciadorBatalha (Player player){
                         enemy.damangeRecieve(dano);
                         break;
                     }
+
                     case 2:{
                         cout << aliado[0] << " utiliza de suas forcas para invocar uma magia" << endl;
                         int dano = magiaAliado(aliado[0]);
@@ -744,7 +757,7 @@ int main()
     player1.imprimeInfoJogador();
     while(continua){
     gerenciadorBatalha(player1);
-    cout << "-------------------------------------------------------------" << endl << endl;
+    separator();
     cout << "Deseja Continuar ?" << endl << endl;
     cout << " 1- Sim   |   2 Não" << endl;
     cin >>  aux;
