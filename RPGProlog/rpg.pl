@@ -78,8 +78,8 @@ playerRegen():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defes
 								retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
 								assert(player(Nome, HpMax, HpMax, ManaMax, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)).
 
-% regras auxiliares para criação de inimigos.
-geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,dragão,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
+% regras auxiliares para criaï¿½ï¿½o de inimigos.
+geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,dragï¿½o,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
 
 geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Hp).
 
@@ -136,7 +136,7 @@ battlemanager(1) :-
 	write("Novo inimigo encontrado"),
 	enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
-	((PlayerIsAlive =:= true) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 Não"),read(K),battlemanager(K));(PlayerIsAlive =:= false)-> battlemanager(2)).
+	((PlayerIsAlive =:= true) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 Nï¿½o"),read(K),battlemanager(K));(PlayerIsAlive =:= false)-> battlemanager(2)).
 
 battlemanager(2) :- write("Game Over").
 
@@ -148,21 +148,11 @@ battlemanager(2) :- write("Game Over").
 
 :- initialization(main).
 main:-
-  write("RPG"),
-  write("Qual seu nome?"),
+  write("RPG"),nl,
+  write("Qual seu nome?"),nl,
   read(Nome),
   write("Escolha sua classe..."), nl,
   read(Classe), nl,
   class(Classe, Nome, X),
   playerMaker(Classe, X),
   battlemanager(1).
-
-
-
-
-
-
-
-
-
-
