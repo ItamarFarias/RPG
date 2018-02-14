@@ -4,7 +4,7 @@ dynamic inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nive
 
 playerMaker(1, Nome):- assert(player(Nome, 400, 400, 10, 10, 50, 0, 80, 15, 20, 0, 1, 100, true)). % Guerreiro
 playerMaker(2, Nome):- assert(player(Nome, 400, 400, 200, 200, 30, 40, 60, 50, 20, 0, 1, 100, true)). % Paladino
-playerMaker(3, Nome):- assert(player(Nome, 250, 250, 80, 80, 45, 20, 30, 15, 100, 0, 1, 100 true)). % Caçador
+playerMaker(3, Nome):- assert(player(Nome, 250, 250, 80, 80, 45, 20, 30, 15, 100, 0, 1, 100, true)). % Caçador
 playerMaker(4, Nome):- assert(player(Nome, 200, 200, 400, 400, 15, 60, 20, 40, 15, 0, 1, 100, true)). % Mago
 
 %no lugar disso poderiamos adiconar outro termo ao player para determinar sua classe.
@@ -13,7 +13,7 @@ class(2, Nome, X):- string_concat(Nome, " -- (Classe : Paladino) ", X).
 class(3, Nome, X):- string_concat(Nome, " -- (Classe : Caçador) ", X).
 class(4, Nome, X):- string_concat(Nome, " -- (Classe : Mago) ", X).
 
-%Implementação do comando if/then/else. O uso do cut "!" significa que o programa nao ira mais fazer buscas por outra regra if / n vai atras de queries mais.
+%Implementação do comando/regra if/then/else. O uso do cut "!" significa que o programa nao ira mais fazer buscas por outra regra if / n vai atras de queries mais.
 if(Condition,Then,Else) :- Condition, !, Then.
 if(_,_,Else) :- Else.
 
@@ -36,6 +36,29 @@ receiveDamageByEnemy(Dano):- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, Dano
 increaseExp(MoreExp):- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
 									 retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
 									 assert(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, MoreExp, Nivel, ControlNivel, IsAlive)).
+
+
+%Regra responsavel por realizar a cura do player.
+curaPlayer(TotalDeCura) :- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
+									 		TotalDeCura is DanoMagico * 5,
+											if(Hp >= HpMax, onlyReducesMana(NovoMana), reduceManaAndRestorePlayer(NovoMana, NovoHP)).
+
+%Reduz a quantidade de mana do player, que é definido como um fato. Logo, temos de reescrever o fato. -Regra usada na cura.
+onlyReducesMana(NovoMana) :- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
+												NovoMana is (Mana -(10 * Nivel)),
+												retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
+												assert(player(Nome, Hp, HpMax, NovoMana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)).
+
+%Reduz mana e cura o player. -Regra usada na cura, caso o total de cura nao ultrapasse o hp maximo.
+reduceManaAndRestorePlayer(NovoMana, NovoHP) :- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
+ 																								NovoMana is (Mana - (10 * Nivel)),
+																								NovoHP is ((DanoMagico * 5) + Hp),
+																								retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
+																								if(NovoHP > HpMax,
+																								assert(player(Nome, HpMax, HpMax, NovoMana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
+																								assert(player(Nome, NovoHP, HpMax, NovoMana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive))).
+
+
 
 updatePlayer():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
 	(Exp >= ControlNivel) ->
