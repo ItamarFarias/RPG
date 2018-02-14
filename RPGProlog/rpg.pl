@@ -2,7 +2,7 @@ dynamic player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, Defes
 dynamic aliado(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Nivel, IsAlive ).
 dynamic inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive).
 
-PlayerMaker(1, Nome):- assert(player(Nome, 400, 400, 10, 10, 50, 0, 80, 15, 20, 0, 1, 100, true)). % Guerreiro
+playerMaker(1, Nome):- assert(player(Nome, 400, 400, 10, 10, 50, 0, 80, 15, 20, 0, 1, 100, true)). % Guerreiro
 playerMaker(2, Nome):- assert(player(Nome, 400, 400, 200, 200, 30, 40, 60, 50, 20, 0, 1, 100, true)). % Paladino
 playerMaker(3, Nome):- assert(player(Nome, 250, 250, 80, 80, 45, 20, 30, 15, 100, 0, 1, 100, true)). % Caçador
 playerMaker(4, Nome):- assert(player(Nome, 200, 200, 400, 400, 15, 60, 20, 40, 15, 0, 1, 100, true)). % Mago
