@@ -78,8 +78,8 @@ playerRegen():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defes
 								retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
 								assert(player(Nome, HpMax, HpMax, ManaMax, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)).
 
-% regras auxiliares para cria��o de inimigos.
-geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,drag�o,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
+
+geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,dragao,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
 
 geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Hp).
 
@@ -101,7 +101,7 @@ enemyMaker():- geraNomeInimigo(Nome),geraHpInimigo(Hp),geraDefesaInimigo(Defesa)
 %Dano causado pelo player ao inimigo
 calculaDanoFisico(Dano):- inimigo(_,_,_, Defesa,_,_, _, _, _), player(_, _, _, _, _, Ataque, _, _, _, _, _, _, _, _), Z is  Ataque - Defesa,(Z < 0) -> Dano is 0 ; (Z >= 0) -> Dano is Z  .
 
-recieveDamageByPlayer(Dano):-
+recieveDamageByPlayer(Dano):- inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive),
 	NovoHp is Hp - Dano,
 	(retract(inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive))),
 	 (NovoHp > 0) ->  assert(inimigo(Nome, NovoHp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive));
@@ -134,9 +134,9 @@ battleSystem(_,_).
 
 battlemanager(1) :-
 	write("Novo inimigo encontrado"),
-	enemyMaker(), battleSystem(true,true),
+		enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
-	((PlayerIsAlive =:= true) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K));(PlayerIsAlive =:= false)-> battlemanager(2)).
+	((PlayerIsAlive) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
 
 battlemanager(2) :- write("Game Over").
 
