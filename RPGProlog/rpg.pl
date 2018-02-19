@@ -118,7 +118,7 @@ battleSystem(true,true):-
 	read(X),
 	(
 	 ((X =:= 1)-> write("Voce ataca o inimigo fisicamente"),nl,calculaDanoFisico(Dano),recieveDamageByPlayer(Dano));
-	 ((X =:= 2) -> write("Voce sente que precisa se curar "),nl);
+	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl);
 	 ((X =:= 3) -> write("Voce Sente um poder subito tomar conta de seu ser "),nl)
 	 ),
 
@@ -148,7 +148,22 @@ battlemanager(2) :- write("Game Over").
 
 :- initialization(main).
 main:-
-  write("RPG"),nl,
+  write("RRRRRRRRRRRRRRRRR   PPPPPPPPPPPPPPPPP           GGGGGGGGGGGGG
+R::::::::::::::::R  P::::::::::::::::P       GGG::::::::::::G
+R::::::RRRRRR:::::R P::::::PPPPPP:::::P    GG:::::::::::::::G
+RR:::::R     R:::::RPP:::::P     P:::::P  G:::::GGGGGGGG::::G
+  R::::R     R:::::R  P::::P     P:::::P G:::::G       GGGGGG
+  R::::R     R:::::R  P::::P     P:::::PG:::::G
+  R::::RRRRRR:::::R   P::::PPPPPP:::::P G:::::G
+  R:::::::::::::RR    P:::::::::::::PP  G:::::G    GGGGGGGGGG
+  R::::RRRRRR:::::R   P::::PPPPPPPPP    G:::::G    G::::::::G
+  R::::R     R:::::R  P::::P            G:::::G    GGGGG::::G
+  R::::R     R:::::R  P::::P            G:::::G        G::::G
+  R::::R     R:::::R  P::::P             G:::::G       G::::G
+RR:::::R     R:::::RPP::::::PP            G:::::GGGGGGGG::::G
+R::::::R     R:::::RP::::::::P             GG:::::::::::::::G
+R::::::R     R:::::RP::::::::P               GGG::::::GGG:::G
+RRRRRRRR     RRRRRRRPPPPPPPPPP                  GGGGGG   GGGG  "),nl,
   write("Qual seu nome?"),nl,
   read(Nome),
   write("Escolha sua classe..."), nl,
