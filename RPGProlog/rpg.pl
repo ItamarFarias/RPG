@@ -107,23 +107,24 @@ recieveDamageByPlayer(Dano):- inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Ve
 	 (NovoHp > 0) ->  assert(inimigo(Nome, NovoHp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive));
 				assert(inimigo(Nome, 0, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, false)).
 
-
-
+printSeparador():- write("-------------------------------------------------------------"),nl.
 
 battleSystem(true,true):-
 	write("Turno do Jogador"),nl,
-        write("1 - Ataque Fisico"),nl,
+  write("1 - Ataque Fisico"),nl,
 	write("2 - Cura"), nl,
 	write("3 - Magia"), nl,
+	printSeparador,
+	write("Digite o numero referente a ação desejada: "),nl,
 	read(X),
 	(
 	 ((X =:= 1)-> write("Voce ataca o inimigo fisicamente"),nl,calculaDanoFisico(Dano),recieveDamageByPlayer(Dano));
 	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl);
-	 ((X =:= 3) -> write("Voce Sente um poder subito tomar conta de seu ser "),nl)
+	 ((X =:= 3) -> write("Voce sente um poder subito tomar conta de seu ser "),nl)
 	 ),
 
 	 write("Turno inimigo :"),nl,
-	 inimigo(_,_,DanoInimigo,_,_,_,_,_,_),write("o inimigo lhe ataca"),
+	 inimigo(_,_,DanoInimigo,_,_,_,_,_,_),write("o inimigo lhe ataca"),nl,
 	 receiveDamageByEnemy(DanoInimigo),
 	 player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),
 	 inimigo(_,_,_,_,_,_,_,_, InimigoIsAlive),
@@ -133,7 +134,7 @@ battleSystem(_,_).
 
 
 battlemanager(1) :-
-	write("Novo inimigo encontrado"),
+	write("Novo inimigo encontrado"),nl,
 		enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
 	((PlayerIsAlive) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
@@ -141,9 +142,20 @@ battlemanager(1) :-
 battlemanager(2) :- write("Game Over").
 
 
+printClasses():- write("------------- Escolha a classe que seu personagem irá pertencer -------------"),nl,
+  printInfoGuerreiro(),nl,
+  printInfoPaladino(),nl,
+  printInfoCacador(),nl,
+  printInfoMago(),nl,
+  printSeparador().
 
+printInfoGuerreiro():- write("1 - Guerreiro: Guerreiros combinam força, liderança e vasto conhecimento em armas e armaduras para criar o caos no campo de batalha."),nl.
 
+printInfoPaladino():- write("2 - Paladino: Estes guerreiros sagrados estão equipados com armaduras de placas para enfrentar os inimigos mais perigosos e são adeptos da benção da Luz que lhes permite curar feridas."),nl.
 
+printInfoCacador():- write("3 - Caçador: Apesar de suas armas à distância serem extremamente eficientes, os caçadores se encontram em desvantagem quando seus inimigos aproximam para o combate corpo a corpo."),nl.
+
+printInfoMago():- write("4 - Mago: Apesar de dominarem poderosas magias ofensivas, os magos são frágeis e usam armaduras leves deixando-os particularmente vulneráveis contra ataques corpo a corpo."),nl.
 
 
 :- initialization(main).
@@ -165,8 +177,8 @@ R::::::R     R:::::RP::::::::P             GG:::::::::::::::G
 R::::::R     R:::::RP::::::::P               GGG::::::GGG:::G
 RRRRRRRR     RRRRRRRPPPPPPPPPP                  GGGGGG   GGGG  "),nl,
   write("Qual seu nome?"),nl,
-  read(Nome),
-  write("Escolha sua classe..."), nl,
+  read(Nome),nl,
+	printClasses(),
   read(Classe), nl,
   class(Classe, Nome, X),
   playerMaker(Classe, X),
