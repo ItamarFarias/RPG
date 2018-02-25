@@ -99,28 +99,42 @@ geraAtaqueInimigo(Ataque):- player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is X/2 , Z is 
 enemyMaker():- geraNomeInimigo(Nome),geraHpInimigo(Hp),geraDefesaInimigo(Defesa),geraDefesaMagicaInimigo(DefesaMagica),geraVelocidadeInimigo(Velocidade),geraXpDrop(XpDrop),geraNivel(Nivel),geraAtaqueInimigo(Ataque),assert(inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, true)).
 
 %Dano causado pelo player ao inimigo
-calculaDanoFisico(Dano):- inimigo(_,_,_, Defesa,_,_, _, _, _), player(_, _, _, _, _, Ataque, _, _, _, _, _, _, _, _), Z is  Ataque - Defesa,(Z < 0) -> Dano is 0 ; (Z >= 0) -> Dano is Z  .
+calculaDanoFisico(Dano):- inimigo(_,_,_, Defesa,_,_, _, _, _), player(_, _, _, _, _, Ataque, _, _, _, _, _, _, _, _), Z is  Ataque - Defesa,(Z < 0) -> Dano is 0 ; Dano is Z  .
 
 recieveDamageByPlayer(Dano):- inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive),
-	NovoHp is Hp - Dano,
+	NovoHp is (Hp - Dano),
 	(retract(inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive))),
 	 (NovoHp > 0) ->  assert(inimigo(Nome, NovoHp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive));
 				assert(inimigo(Nome, 0, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, false)).
 
 printSeparador():- write("-------------------------------------------------------------"),nl.
 
+printInfoPlayerInimigo():- player(_, Hp, HpMax, Mana, ManaMax, _, _, _, _, _, _, _, _, _),
+	inimigo(_, HpInimigo, _, _, _, _, _, _, _),
+	write("*********************************"),nl,
+  write("HP do Jogador -> "), write(Hp), write("/"), write(HpMax), write("  ||  "), write("HP do Inimigo -> "), write(HpInimigo),nl,
+  write("Mana do Jogador -> "), write(Mana), write("/"),write(ManaMax),nl,
+  write("*********************************"),nl.
+
 battleSystem(true,true):-
+	printInfoPlayerInimigo(),
 	write("Turno do Jogador"),nl,
+	printSeparador(),
   write("1 - Ataque Fisico"),nl,
 	write("2 - Cura"), nl,
 	write("3 - Magia"), nl,
-	printSeparador,
+	printSeparador(),
 	write("Digite o numero referente a ação desejada: "),nl,
 	read(X),
 	(
 	 ((X =:= 1)-> write("Voce ataca o inimigo fisicamente"),nl,calculaDanoFisico(Dano),recieveDamageByPlayer(Dano));
 	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl);
-	 ((X =:= 3) -> write("Voce sente um poder subito tomar conta de seu ser "),nl)
+	 ((X =:= 3) -> write("Voce sente um poder subito tomar conta de seu ser "),nl,
+	  printMagias(),
+		write("Escolha uma das magias acima"),
+		read(Escolha),
+		possuiManaSuficiente(Escolha,B),
+		((B) -> (magiaDano(Escolha, DanoMagico), calculaDanoMagico(DanoMagico, DanoFinal),recieveDamageByPlayer(DanoFinal));recieveDamageByPlayer(0)))
 	 ),
 
 	 write("Turno inimigo :"),nl,
@@ -133,14 +147,50 @@ battleSystem(true,true):-
 battleSystem(_,_).
 
 
-battlemanager(1) :-
-	write("Novo inimigo encontrado"),nl,
+battlemanager(1) :- printSeparador(),
+	write("Novo inimigo encontrado"),nl,printSeparador(),
 		enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
 	((PlayerIsAlive) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
 
 battlemanager(2) :- write("Game Over").
 
+calculaDanoMagico(DanoMagico, DanoCausado):- inimigo(_, _, _, _, DefesaMagica, _, _, _, _),
+	DM is DefesaMagica / 100.0,
+  DanoCausado is round(DanoMagico / (DM + 1.0)).
+
+printMagias():- printExplosion(), printThundara().
+
+printExplosion():- player(_, _, _, _, _, _, DanoMagico, _, _, _, _, Nivel, _, _),
+	printSeparador(),
+	ExplosionDano is round(1.15 * DanoMagico),
+	ConsumoDeMana is 10 * Nivel,
+	write(" 1 - Explosion|Consome "), write(ConsumoDeMana),	write(" de mana| causa "), write(ExplosionDano), write(" de dano"), nl, printSeparador().
+
+printThundara():- player(_, _, _, _, _, _, DanoMagico, _, _, _, _, Nivel, _, _),
+	ThundaraDano is round(1.3 * DanoMagico),
+	ConsumoDeMana is 20 * Nivel,
+	(Nivel >= 2) -> write(" 2 - Thundara|Consome  "), write(ConsumoDeMana), write(" de mana| causa "), write(ThundaraDano), write(" de dano"), nl, printSeparador();
+	nl.
+
+possuiManaSuficiente(Magia, Possui):- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
+	(magiaMana(Magia, Nivel, ManaNecessaria),
+	(ManaNecessaria > Mana) -> printManaInsuficiente(), Possui = false;
+	magiaMana(Magia, Nivel, ManaNecessaria),
+	NewMana is (Mana - ManaNecessaria),
+	retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
+	assert(player(Nome, Hp, HpMax, NewMana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
+	Possui = true).
+
+printManaInsuficiente():- write("Mana insuficiente para realizar tal chamado"),nl.
+
+magiaDano(1, ExplosionDano):- player(_, _, _, _, _, _, DanoMagico, _, _, _, _, _, _, _),
+	ExplosionDano is round(1.15 * DanoMagico).
+magiaDano(2, ThundaraDano):- player(_, _, _, _, _, _, DanoMagico, _, _, _, _, _, _, _),
+	ThundaraDano is round(1.3 * DanoMagico).
+
+magiaMana(1, Nivel, ManaNecessaria):- ManaNecessaria is (10 * Nivel).
+magiaMana(2, Nivel, ManaNecessaria):- ManaNecessaria is (20 * Nivel).
 
 printClasses():- write("------------- Escolha a classe que seu personagem irá pertencer -------------"),nl,
   printInfoGuerreiro(),nl,
