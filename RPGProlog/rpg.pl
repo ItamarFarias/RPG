@@ -136,10 +136,14 @@ battleSystem(true,true):-
 		possuiManaSuficiente(Escolha,B),
 		((B) -> (magiaDano(Escolha, DanoMagico), calculaDanoMagico(DanoMagico, DanoFinal),recieveDamageByPlayer(DanoFinal));recieveDamageByPlayer(0)))
 	 ),
-
+	 inimigo(_,_,_,_,_,_,_,_, InimigoIsAlive),
+	 (InimigoIsAlive) ->
 	 write("Turno inimigo :"),nl,
 	 inimigo(_,_,DanoInimigo,_,_,_,_,_,_),write("o inimigo lhe ataca"),nl,
 	 receiveDamageByEnemy(DanoInimigo),
+	 player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),
+	 inimigo(_,_,_,_,_,_,_,_, InimigoIsAlive),
+	 battleSystem(PlayerIsAlive,InimigoIsAlive);
 	 player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),
 	 inimigo(_,_,_,_,_,_,_,_, InimigoIsAlive),
 	 battleSystem(PlayerIsAlive,InimigoIsAlive).
@@ -147,11 +151,13 @@ battleSystem(true,true):-
 battleSystem(_,_).
 
 
+
+
 battlemanager(1) :- printSeparador(),
 	write("Novo inimigo encontrado"),nl,printSeparador(),
 		enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
-	((PlayerIsAlive) -> write("Voce venceu"), inimigo(_,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),write("Voce venceu"),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
+	((PlayerIsAlive) -> write("Voce venceu"), inimigo(Nome,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),retract(inimigo(Nome,_,_,_,_,_,MoreExp,_, _)),playerRegen(),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
 
 battlemanager(2) :- write("Game Over").
 
