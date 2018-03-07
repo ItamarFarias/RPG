@@ -81,7 +81,7 @@ playerRegen():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defes
 
 geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,dragao,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
 
-geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Hp).
+geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,_,_,_),Y is X , Z is X/2,  random(Z,Y,Hp).
 
 geraDefesaInimigo(Defesa) :-  player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Defesa).
 
@@ -93,13 +93,14 @@ geraXpDrop(XpDrop) :-  player(_,_,_,_,_,_,_,_,_,_,_,X,_,_),random(0,200,Z) , XpD
 
 geraNivel(Nivel):-  player(_,_,_,_,_,_,_,_,_,_,_,X,_,_),Z is X *2 , random(1,Z,Nivel).
 
-geraAtaqueInimigo(Ataque):- player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is X/2 , Z is 2*X, random(Y,Z,Ataque).
+geraAtaqueInimigo(Ataque):- player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is X/10 , Z is (X)/2, random(Y,Z,Ataque).
 
 % gerador de inimigo.
 enemyMaker():- geraNomeInimigo(Nome),geraHpInimigo(Hp),geraDefesaInimigo(Defesa),geraDefesaMagicaInimigo(DefesaMagica),geraVelocidadeInimigo(Velocidade),geraXpDrop(XpDrop),geraNivel(Nivel),geraAtaqueInimigo(Ataque),assert(inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, true)).
 
 %Dano causado pelo player ao inimigo
-calculaDanoFisico(Dano):- inimigo(_,_,_, Defesa,_,_, _, _, _), player(_, _, _, _, _, Ataque, _, _, _, _, _, _, _, _), Z is  Ataque - Defesa,(Z < 0) -> Dano is 0 ; Dano is Z  .
+calculaDanoFisico(Dano):- inimigo(_,_,_, Defesa,_,_, _, _, _), player(_, _, _, _, _, Ataque, _, _, _, _, _, _, _, _),DF is Defesa / 100.0,
+  Dano is round(Ataque / (DF + 1.0)).
 
 recieveDamageByPlayer(Dano):- inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive),
 	NovoHp is (Hp - Dano),
@@ -164,6 +165,7 @@ battlemanager(2) :- write("Game Over").
 calculaDanoMagico(DanoMagico, DanoCausado):- inimigo(_, _, _, _, DefesaMagica, _, _, _, _),
 	DM is DefesaMagica / 100.0,
   DanoCausado is round(DanoMagico / (DM + 1.0)).
+
 
 printMagias():- printExplosion(), printThundara().
 
