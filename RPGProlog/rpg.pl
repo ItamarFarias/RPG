@@ -1,3 +1,4 @@
+
 dynamic player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive).
 dynamic aliado(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Nivel, IsAlive ).
 dynamic inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, IsAlive).
@@ -16,6 +17,7 @@ class(4, Nome, X):- string_concat(Nome, " -- (Classe : Mago) ", X).
 %Implementação do comando/regra if/then/else. O uso do cut "!" significa que o programa nao ira mais fazer buscas por outra regra if / n vai atras de queries mais.
 if(Condition,Then,Else) :- Condition, !, Then.
 if(_,_,Else) :- Else.
+
 
 %Provavelmente deve ser modificado para usar também o retract para excluir o fato que representa o player existente!
 %Foi testado no "shell" do prolog e aparenta estar funcional
@@ -126,7 +128,8 @@ battleSystem(true,true):-
 	write("3 - Magia"), nl,
 	printSeparador(),
 	write("Digite o numero referente a ação desejada: "),nl,
-	read(X),
+	read(X), 
+	shell(clear), sleep(0.8),
 	(
 	 ((X =:= 1)-> write("Voce ataca o inimigo fisicamente"),nl,calculaDanoFisico(Dano),recieveDamageByPlayer(Dano));
 	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl);
@@ -134,6 +137,7 @@ battleSystem(true,true):-
 	  printMagias(),
 		write("Escolha uma das magias acima"),
 		read(Escolha),
+		shell(clear), sleep(0.8),
 		possuiManaSuficiente(Escolha,B),
 		((B) -> (magiaDano(Escolha, DanoMagico), calculaDanoMagico(DanoMagico, DanoFinal),recieveDamageByPlayer(DanoFinal));recieveDamageByPlayer(0)))
 	 ),
@@ -158,9 +162,9 @@ battlemanager(1) :- printSeparador(),
 	write("Novo inimigo encontrado"),nl,printSeparador(),
 		enemyMaker(), battleSystem(true,true),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
-	((PlayerIsAlive) -> write("Voce venceu"), inimigo(Nome,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),retract(inimigo(Nome,_,_,_,_,_,MoreExp,_, _)),playerRegen(),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K),battlemanager(K)); battlemanager(2)).
+	((PlayerIsAlive) -> write("Voce venceu"), inimigo(Nome,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),retract(inimigo(Nome,_,_,_,_,_,MoreExp,_, _)),playerRegen(),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K), shell(clear), battlemanager(K)); battlemanager(2)).
 
-battlemanager(2) :- write("Game Over").
+battlemanager(2) :- write("Game Over!").
 
 calculaDanoMagico(DanoMagico, DanoCausado):- inimigo(_, _, _, _, DefesaMagica, _, _, _, _),
 	DM is DefesaMagica / 100.0,
@@ -218,7 +222,8 @@ printInfoMago():- write("4 - Mago: Apesar de dominarem poderosas magias ofensiva
 
 :- initialization(main).
 main:-
-  write("RRRRRRRRRRRRRRRRR   PPPPPPPPPPPPPPPPP           GGGGGGGGGGGGG
+shell(clear), nl,
+write("RRRRRRRRRRRRRRRRR   PPPPPPPPPPPPPPPPP           GGGGGGGGGGGGG
 R::::::::::::::::R  P::::::::::::::::P       GGG::::::::::::G
 R::::::RRRRRR:::::R P::::::PPPPPP:::::P    GG:::::::::::::::G
 RR:::::R     R:::::RPP:::::P     P:::::P  G:::::GGGGGGGG::::G
@@ -234,10 +239,15 @@ RR:::::R     R:::::RPP::::::PP            G:::::GGGGGGGG::::G
 R::::::R     R:::::RP::::::::P             GG:::::::::::::::G
 R::::::R     R:::::RP::::::::P               GGG::::::GGG:::G
 RRRRRRRR     RRRRRRRPPPPPPPPPP                  GGGGGG   GGGG  "),nl,
-  write("Qual seu nome?"),nl,
-  read(Nome),nl,
-	printClasses(),
-  read(Classe), nl,
-  class(Classe, Nome, X),
-  playerMaker(Classe, X),
-  battlemanager(1).
+
+write("Qual seu nome?"),nl,
+read(Nome),nl,
+shell(clear),
+
+printClasses(),
+read(Classe), nl,
+shell(clear),
+
+class(Classe, Nome, X),
+playerMaker(Classe, X),
+battlemanager(1).
