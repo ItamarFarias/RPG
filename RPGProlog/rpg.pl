@@ -64,15 +64,15 @@ reduceManaAndRestorePlayer(NovoMana, NovoHP) :- player(Nome, Hp, HpMax, Mana, Ma
 
 updatePlayer():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive),
 	(Exp >= ControlNivel) ->
-		NewHp is (HpMax + (HpMax // 5)),
-		NewMana is (ManaMax + (ManaMax // 5)),
-		NewAtaque is (Ataque + (Ataque // 5)),
-		NewDanoMagico is (DanoMagico + (DanoMagico // 5)),
-		NewDefesa is (Defesa + (Defesa // 5)),
-		NewDefesaMagica is (DefesaMagica + (DefesaMagica // 5)),
-		NewVelocidade is (Velocidade + (Velocidade // 3)),
+		NewHp is (HpMax + ((HpMax // 20)*Nivel)),
+		NewMana is (ManaMax + ((ManaMax // 20)*Nivel)),
+		NewAtaque is (Ataque + ((Ataque // 20)*Nivel)),
+		NewDanoMagico is (DanoMagico + ((DanoMagico // 20)*Nivel)),
+		NewDefesa is (Defesa + ((Defesa // 20)*Nivel)),
+		NewDefesaMagica is (DefesaMagica + ((DefesaMagica // 20)*Nivel)),
+		NewVelocidade is (Velocidade + ((Velocidade // 12)*Nivel)),
 		NewNivel is (Nivel + 1),
-		NewControlNivel is (ControlNivel * 2),
+		NewControlNivel is (ControlNivel * ((Nivel//2)+1)),
 		retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
 		assert(player(Nome, NewHp, NewHp, NewMana, NewMana, NewAtaque, NewDanoMagico, NewDefesa, NewDefesaMagica, NewVelocidade, Exp, NewNivel, NewControlNivel, IsAlive)).
 
@@ -83,19 +83,19 @@ playerRegen():- player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defes
 
 geraNomeInimigo(Nome) :- random(0,14,Z),nth0(Z,[morcego,dragao,troll,goblin,orc,mago_negro ,rato,barata ,demonio ,harpia,cerberus,cobra,espirito,cavaleiro_Negro,corrompido],Nome).
 
-geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,_,_,_),Y is X , Z is X/2,  random(Z,Y,Hp).
+geraHpInimigo(Hp) :-  player(_,_,X,_,_,_,_,_,_,_,_,Nivel,_,_),Y is X+(Nivel*4) , Z is X/2,  random(Z,Y,Hp).
 
-geraDefesaInimigo(Defesa) :-  player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Defesa).
+geraDefesaInimigo(Defesa) :-  player(_,_,_,_,_,_,_,X,_,_,_,Nivel,_,_),Y is (2*X)+(Nivel*5) , Z is X/2,  random(Z,Y,Defesa).
 
-geraDefesaMagicaInimigo(DefesaMagica) :-  player(_,_,_,_,_,_,_,_,X,_,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,DefesaMagica).
+geraDefesaMagicaInimigo(DefesaMagica) :-  player(_,_,_,_,_,_,_,_,X,_,_,Nivel,_,_),Y is (2*X)+(Nivel*5) , Z is X/2,  random(Z,Y,DefesaMagica).
 
-geraVelocidadeInimigo(Velocidade):- player(_,_,_,_,_,_,_,_,_,X,_,_,_,_),Y is 2*X , Z is X/2,  random(Z,Y,Velocidade).
+geraVelocidadeInimigo(Velocidade):- player(_,_,_,_,_,_,_,_,_,X,_,Nivel,_,_),Y is (2*X)+(Nivel*5) , Z is X/2,  random(Z,Y,Velocidade).
 
 geraXpDrop(XpDrop) :-  player(_,_,_,_,_,_,_,_,_,_,_,X,_,_),random(0,200,Z) , XpDrop is X*Z.
 
 geraNivel(Nivel):-  player(_,_,_,_,_,_,_,_,_,_,_,X,_,_),Z is X *2 , random(1,Z,Nivel).
 
-geraAtaqueInimigo(Ataque):- player(_,_,_,_,_,_,_,X,_,_,_,_,_,_),Y is X/10 , Z is (X)/2, random(Y,Z,Ataque).
+geraAtaqueInimigo(Ataque):- player(_,_,_,_,_,_,_,X,_,_,_,Nivel,_,_),Y is X/10 , Z is (X/2)+(Nivel*4), random(Y,Z,Ataque).
 
 % gerador de inimigo.
 enemyMaker():- geraNomeInimigo(Nome),geraHpInimigo(Hp),geraDefesaInimigo(Defesa),geraDefesaMagicaInimigo(DefesaMagica),geraVelocidadeInimigo(Velocidade),geraXpDrop(XpDrop),geraNivel(Nivel),geraAtaqueInimigo(Ataque),assert(inimigo(Nome, Hp, Ataque, Defesa, DefesaMagica, Velocidade, XpDrop, Nivel, true)).
