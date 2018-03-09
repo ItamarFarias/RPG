@@ -164,7 +164,21 @@ battlemanager(1) :- printSeparador(),
 	player(_,_,_,_,_,_,_,_,_,_,_,_,_, PlayerIsAlive),(
 	((PlayerIsAlive) -> write("Voce venceu"), inimigo(Nome,_,_,_,_,_,MoreExp,_, _) ,increaseExp(MoreExp),retract(inimigo(Nome,_,_,_,_,_,MoreExp,_, _)),playerRegen(),nl,write("Deseja continuar ?"),nl,write("1- Sim | 2 N�o"),read(K), shell(clear), battlemanager(K)); battlemanager(2)).
 
-battlemanager(2) :- write("Game Over!").
+battlemanager(2) :- write("
+██████╗  █████╗ ███╗   ███╗███████╗
+██╔════╝ ██╔══██╗████╗ ████║██╔════╝
+██║  ███╗███████║██╔████╔██║█████╗
+██║   ██║██╔══██║██║╚██╔╝██║██╔══╝
+╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
+╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+
+██████╗ ██╗   ██╗███████╗██████╗
+██╔═══██╗██║   ██║██╔════╝██╔══██╗
+██║   ██║██║   ██║█████╗  ██████╔╝
+██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
+╚██████╔╝ ╚████╔╝ ███████╗██║  ██║
+╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝
+																			 ").
 
 calculaDanoMagico(DanoMagico, DanoCausado):- inimigo(_, _, _, _, DefesaMagica, _, _, _, _),
 	DM is DefesaMagica / 100.0,
