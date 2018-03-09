@@ -8,7 +8,6 @@ playerMaker(2, Nome):- assert(player(Nome, 400, 400, 200, 200, 30, 40, 60, 50, 2
 playerMaker(3, Nome):- assert(player(Nome, 250, 250, 80, 80, 45, 20, 30, 15, 100, 0, 1, 100, true)). % Caçador
 playerMaker(4, Nome):- assert(player(Nome, 200, 200, 400, 400, 15, 60, 20, 40, 15, 0, 1, 100, true)). % Mago
 
-%no lugar disso poderiamos adiconar outro termo ao player para determinar sua classe.
 class(1, Nome, X):- string_concat(Nome, " -- (Classe : Guerreiro)", X).
 class(2, Nome, X):- string_concat(Nome, " -- (Classe : Paladino) ", X).
 class(3, Nome, X):- string_concat(Nome, " -- (Classe : Caçador) ", X).
@@ -19,8 +18,7 @@ if(Condition,Then,Else) :- Condition, !, Then.
 if(_,_,Else) :- Else.
 
 
-%Provavelmente deve ser modificado para usar também o retract para excluir o fato que representa o player existente!
-%Foi testado no "shell" do prolog e aparenta estar funcional
+%Usa também o retract para excluir o fato que representa o player existente!
 receiveDamageByEnemy(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive), DanoRecebido, NovoHP) :-
 	NovoHP is (Hp - DanoRecebido),
 	retract(player(Nome, Hp, HpMax, Mana, ManaMax, Ataque, DanoMagico, Defesa, DefesaMagica, Velocidade, Exp, Nivel, ControlNivel, IsAlive)),
@@ -132,7 +130,7 @@ battleSystem(true,true):-
 	shell(clear), sleep(0.8),
 	(
 	 ((X =:= 1)-> write("Voce ataca o inimigo fisicamente"),nl,calculaDanoFisico(Dano),recieveDamageByPlayer(Dano));
-	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl);
+	 ((X =:= 2) -> write("Voce sente que precisa se curar..."),nl, curaPlayer(TotalDeCura), nl, write("...Cura recebida!"), nl, nl);
 	 ((X =:= 3) -> write("Voce sente um poder subito tomar conta de seu ser "),nl,
 	  printMagias(),
 		write("Escolha uma das magias acima"),
@@ -177,8 +175,7 @@ battlemanager(2) :- write("
 ██║   ██║██║   ██║█████╗  ██████╔╝
 ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
 ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║
-╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝
-																			 ").
+╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝").
 
 calculaDanoMagico(DanoMagico, DanoCausado):- inimigo(_, _, _, _, DefesaMagica, _, _, _, _),
 	DM is DefesaMagica / 100.0,
@@ -232,7 +229,6 @@ printInfoPaladino():- write("2 - Paladino: Estes guerreiros sagrados estão equi
 printInfoCacador():- write("3 - Caçador: Apesar de suas armas à distância serem extremamente eficientes, os caçadores se encontram em desvantagem quando seus inimigos aproximam para o combate corpo a corpo."),nl.
 
 printInfoMago():- write("4 - Mago: Apesar de dominarem poderosas magias ofensivas, os magos são frágeis e usam armaduras leves deixando-os particularmente vulneráveis contra ataques corpo a corpo."),nl.
-
 
 :- initialization(main).
 main:-
